@@ -12,9 +12,9 @@ if not exist venv (
 )
 
 echo [2/4] Activating environment and installing pip packages...
-REM call venv\Scripts\activate.bat
-REM python -m pip install --upgrade pip
-REM pip install -r requirements.txt 
+call venv\Scripts\activate.bat
+python -m pip install --upgrade pip
+pip install -r requirements.txt
 
 echo [3/4] Initializing and seeding SQLite Database...
 python init_db.py

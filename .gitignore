@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual Environment
+venv/
+env/
+.venv/
+ENV/
+
+# SQLite Database (generated at runtime by init_db.py)
+*.db
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Agent / Tool Config
+.agents/
+
+# Integration Test Scratch
+tmp-integration-test/
+
+# OS Files
+Desktop.ini
+ehthumbs.db
+
+# Distribution / Packaging
+dist/
+build/
+*.egg-info/
+*.egg
+
+# Byte-compiled / optimized
+*.pyc
+*.pyo
+
+# Logs
+*.log

@@ -23,7 +23,11 @@
 ## 📸 Demo
 
 <p align="center">
-  <img src="docs/demo_screenshot.png" alt="UniSafe Dashboard Demo" width="800" />
+  <img width="2880" height="1268" alt="image" src="https://github.com/user-attachments/assets/cded8e44-5d61-4ff8-a4d8-b060317d1826" />
+  <img width="2880" height="1264" alt="image" src="https://github.com/user-attachments/assets/926a458e-e2d0-44bb-89b4-a567fbc4308a" />
+  <img width="2880" height="1266" alt="image" src="https://github.com/user-attachments/assets/61439bb0-abb4-4acf-b2fb-9ba6c8f4d08e" />
+  <img width="1916" height="1350" alt="image" src="https://github.com/user-attachments/assets/060e9d4d-9be8-4b1c-98c3-2e9ce685d0f6" />
+  <img width="2878" height="1350" alt="image" src="https://github.com/user-attachments/assets/8b495326-d001-45d3-979c-4a731f7f3b29" />
 </p>
 
 ---

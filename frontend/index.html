@@ -109,14 +109,15 @@
         .header {
           position: fixed; /* Keep on top */
           top: 0;
+          left:0;
+          right:0;
           width: 100%;
           z-index: 1000; /* Higher value */
         }
         
         /* Main Content area */
-        .main-content {
-          margin-top: 80px; /* Offset to prevent overlap */
-          z-index: 1;
+       main{
+            padding-top:90px;
         }
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
@@ -176,44 +177,109 @@
     </div>
 
     <!-- Top Navigation App Bar -->
-    <header class="glass-card w-full z-50 border-b border-white/20 flex-shrink-0">
-       <div class="flex flex-nowrap justify-between items-center w-full px-container-margin py-3 max-w-[1200px] mx-auto gap-2">
-           <div class="flex items-center gap-2 cursor-pointer shrink-0" @click="activeTab = 'home'">
-            <img alt="UniSafe Owl Mascot Logo" class="h-12 w-12 md:h-16 md:w-16 object-contain rounded-full shadow-lg border-2 border-primary" src="images/unisafe_logo.png"/>
-            <div class="hidden md:block overflow-hidden">
-                <span class="text-2xl md:text-3xl font-black text-primary block tracking-tight leading-none truncate">UniSafe</span>
-                <span class="text-[9px] md:text-[10px] text-[#4d614e] tracking-wider uppercase font-extrabold mt-1 block truncate">Financial & Housing Platform</span>
-            </div>
-        </div>
-            
-            <nav class="hidden md:flex gap-md items-center bg-[#F0ECE9]/85 p-1 rounded-full border border-gray-200 shadow-inner">
-                <button @click="activeTab = 'home'" :class="activeTab === 'home' ? 'bg-primary text-white font-bold' : 'text-on-surface-variant hover:text-primary'" class="px-6 py-2.5 rounded-full text-xs font-bold transition-all duration-200">
-                    Home
-                </button>
-                <button @click="activeTab = 'dashboard'" :class="activeTab === 'dashboard' ? 'bg-primary text-white font-bold' : 'text-on-surface-variant hover:text-primary'" class="px-6 py-2.5 rounded-full text-xs font-bold transition-all duration-200">
-                    Dashboard
-                </button>
-                <button @click="activeTab = 'matcher'" :class="activeTab === 'matcher' ? 'bg-primary text-white font-bold' : 'text-on-surface-variant hover:text-primary'" class="px-6 py-2.5 rounded-full text-xs font-bold transition-all duration-200">
-                    Property Matcher
-                </button>
-            </nav>
+<header class="glass-card sticky top-0 z-50 w-full border-b border-white/20">
 
-            <div class="flex items-center gap-sm">
-                <!-- User Swipes Indicator & Plan Status -->
-                <div class="bg-primary/10 border border-primary/20 rounded-full px-4 py-1.5 flex items-center gap-2 shrink-0">
-                    <span class="text-xs font-bold text-primary capitalize" x-text="`${userPlan} Plan`"></span>
-                    <span class="w-1 h-1 rounded-full bg-primary/40"></span>
-                    <span class="text-xs font-bold text-primary-container whitespace-nowrap" x-text="userPlan === 'vip' ? '∞ Swipes' : `${swipesToday}/${maxSwipes} Swipes`"></span>
-                </div>
-                <button @click="showPricing = true" class="bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs px-4 py-2 rounded-full shadow transition">
-                    ⭐ Upgrade
-                </button>
-                <button @click="showHelp = true" class="h-10 w-10 flex items-center justify-center bg-[#F0ECE9] hover:bg-[#E2DDD9] rounded-full text-lg shadow-sm transition" title="Show Help Modal">
-                    ❓
-                </button>
+    <div class="max-w-[1200px] mx-auto flex items-center justify-between gap-2 px-container-margin py-3">
+
+        <!-- Logo -->
+        <div
+            class="flex items-center gap-2 flex-1 min-w-0 cursor-pointer"
+            @click="activeTab = 'home'">
+
+            <img
+                src="images/unisafe_logo.png"
+                alt="UniSafe Owl Mascot Logo"
+                class="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 object-contain rounded-full shadow-lg border-2 border-primary">
+
+            <!-- Mobile -->
+            <div class="md:hidden min-w-0">
+                <span class="block text-lg font-black text-primary truncate">
+                    UniSafe
+                </span>
             </div>
+
+            <!-- Desktop -->
+            <div class="hidden md:block overflow-hidden min-w-0">
+                <span class="block text-2xl md:text-3xl font-black text-primary tracking-tight leading-none truncate">
+                    UniSafe
+                </span>
+                <span class="block text-[10px] text-[#4d614e] tracking-wider uppercase font-extrabold truncate">
+                    Financial &amp; Housing Platform
+                </span>
+            </div>
+
         </div>
-    </header>
+
+        <!-- Desktop Navigation -->
+        <nav class="hidden lg:flex gap-md items-center bg-[#F0ECE9]/85 p-1 rounded-full border border-gray-200 shadow-inner">
+
+            <button
+                @click="activeTab = 'home'"
+                :class="activeTab === 'home' ? 'bg-primary text-white font-bold' : 'text-on-surface-variant hover:text-primary'"
+                class="px-6 py-2.5 rounded-full text-xs transition">
+                Home
+            </button>
+
+            <button
+                @click="activeTab = 'dashboard'"
+                :class="activeTab === 'dashboard' ? 'bg-primary text-white font-bold' : 'text-on-surface-variant hover:text-primary'"
+                class="px-6 py-2.5 rounded-full text-xs transition">
+                Dashboard
+            </button>
+
+            <button
+                @click="activeTab = 'matcher'"
+                :class="activeTab === 'matcher' ? 'bg-primary text-white font-bold' : 'text-on-surface-variant hover:text-primary'"
+                class="px-6 py-2.5 rounded-full text-xs transition">
+                Property Matcher
+            </button>
+
+        </nav>
+
+        <!-- Right Side -->
+        <div class="flex items-center gap-2 shrink-0">
+
+            <!-- Plan -->
+            <div class="bg-primary/10 border border-primary/20 rounded-full px-2 sm:px-4 py-1.5 flex items-center gap-1 sm:gap-2">
+
+                <span
+                    class="hidden sm:inline text-xs font-bold text-primary capitalize"
+                    x-text="`${userPlan} Plan`">
+                </span>
+
+                <span class="hidden sm:block w-1 h-1 rounded-full bg-primary/40"></span>
+
+                <span
+                    class="text-xs font-bold text-primary-container whitespace-nowrap"
+                    x-text="userPlan === 'vip' ? '∞' : `${swipesToday}/${maxSwipes}`">
+                </span>
+
+            </div>
+
+            <!-- Upgrade -->
+            <button
+                @click="showPricing = true"
+                class="bg-amber-600 hover:bg-amber-700 text-white rounded-full px-3 md:px-4 py-2 text-xs font-bold transition">
+
+                ⭐
+                <span class="hidden sm:inline">Upgrade</span>
+
+            </button>
+
+            <!-- Help -->
+            <button
+                @click="showHelp = true"
+                class="w-9 h-9 md:w-10 md:h-10 flex items-center justify-center rounded-full bg-[#F0ECE9] hover:bg-[#E2DDD9] shadow-sm transition">
+
+                ❓
+
+            </button>
+
+        </div>
+
+    </div>
+
+</header>
 
     <!-- Mobile Navigation Bar -->
     <div class="md:hidden fixed bottom-4 left-4 right-4 z-40 bg-white/95 backdrop-blur border border-gray-200 rounded-full shadow-lg p-1.5 flex justify-around">

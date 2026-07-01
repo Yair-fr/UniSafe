@@ -105,6 +105,19 @@
     </script>
     
     <style>
+        /* Header container */
+        .header {
+          position: fixed; /* Keep on top */
+          top: 0;
+          width: 100%;
+          z-index: 1000; /* Higher value */
+        }
+        
+        /* Main Content area */
+        .main-content {
+          margin-top: 80px; /* Offset to prevent overlap */
+          z-index: 1;
+        }
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }

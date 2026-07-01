@@ -227,6 +227,14 @@ Total Monthly Burn = Rent + Utilities + Arnona (after discount) + CPI-adjusted G
 - Fallback multiplier of `1.05` if API is unreachable
 
 ---
+## Key Explanations
+- Viewport Functionality: Meta tag scales page width matching device screen.
+
+- Input Protection: Number-only keyboard blocks non-numeric characters.
+
+- Empty Value Prevention: HTML validation requires active numeric input.
+
+---
 
 ## 🤝 Contributing
 

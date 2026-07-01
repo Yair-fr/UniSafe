@@ -164,7 +164,7 @@
 
     <!-- Top Navigation App Bar -->
     <header class="glass-card w-full z-50 border-b border-white/20 flex-shrink-0">
-        <div class="flex justify-between items-center w-full px-container-margin py-3 max-w-[1200px] mx-auto">
+        <div class="flex flex-nowrap justify-between items-center w-full px-container-margin py-3 max-w-[1200px] mx-auto gap-4">
             <div class="flex items-center gap-md cursor-pointer" @click="activeTab = 'home'">
                 <img alt="UniSafe Owl Mascot Logo" class="h-16 w-16 object-contain rounded-full shadow-lg border-2 border-primary" src="images/unisafe_logo.png"/>
                 <div>
@@ -187,10 +187,10 @@
 
             <div class="flex items-center gap-sm">
                 <!-- User Swipes Indicator & Plan Status -->
-                <div class="bg-primary/10 border border-primary/20 rounded-full px-4 py-1.5 flex items-center gap-2">
+                <div class="bg-primary/10 border border-primary/20 rounded-full px-4 py-1.5 flex items-center gap-2 shrink-0">
                     <span class="text-xs font-bold text-primary capitalize" x-text="`${userPlan} Plan`"></span>
                     <span class="w-1 h-1 rounded-full bg-primary/40"></span>
-                    <span class="text-xs font-bold text-primary-container" x-text="userPlan === 'vip' ? '∞ Swipes' : `${swipesToday}/${maxSwipes} Swipes`"></span>
+                    <span class="text-xs font-bold text-primary-container whitespace-nowrap" x-text="userPlan === 'vip' ? '∞ Swipes' : `${swipesToday}/${maxSwipes} Swipes`"></span>
                 </div>
                 <button @click="showPricing = true" class="bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs px-4 py-2 rounded-full shadow transition">
                     ⭐ Upgrade

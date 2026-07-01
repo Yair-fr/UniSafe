@@ -165,13 +165,13 @@
     <!-- Top Navigation App Bar -->
     <header class="glass-card w-full z-50 border-b border-white/20 flex-shrink-0">
        <div class="flex flex-nowrap justify-between items-center w-full px-container-margin py-3 max-w-[1200px] mx-auto gap-2">
-            <div class="flex items-center gap-md cursor-pointer shrink-0" @click="activeTab = 'home'">
-                <img alt="UniSafe Owl Mascot Logo" class="h-12 w-12 md:h-16 md:w-16 object-contain rounded-full shadow-lg border-2 border-primary" src="images/unisafe_logo.png"/>
-                <div class="hidden sm:block overflow-hidden">
-                    <span class="text-2xl md:text-3xl font-black text-primary block tracking-tight leading-none truncate">UniSafe</span>
-                    <span class="text-[9px] md:text-[10px] text-[#4d614e] tracking-wider uppercase font-extrabold mt-1 block truncate">Financial & Housing Platform</span>
-                </div>
+           <div class="flex items-center gap-2 cursor-pointer shrink-0" @click="activeTab = 'home'">
+            <img alt="UniSafe Owl Mascot Logo" class="h-12 w-12 md:h-16 md:w-16 object-contain rounded-full shadow-lg border-2 border-primary" src="images/unisafe_logo.png"/>
+            <div class="hidden md:block overflow-hidden">
+                <span class="text-2xl md:text-3xl font-black text-primary block tracking-tight leading-none truncate">UniSafe</span>
+                <span class="text-[9px] md:text-[10px] text-[#4d614e] tracking-wider uppercase font-extrabold mt-1 block truncate">Financial & Housing Platform</span>
             </div>
+        </div>
             
             <nav class="hidden md:flex gap-md items-center bg-[#F0ECE9]/85 p-1 rounded-full border border-gray-200 shadow-inner">
                 <button @click="activeTab = 'home'" :class="activeTab === 'home' ? 'bg-primary text-white font-bold' : 'text-on-surface-variant hover:text-primary'" class="px-6 py-2.5 rounded-full text-xs font-bold transition-all duration-200">

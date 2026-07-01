@@ -6,7 +6,8 @@
 
 <p align="center">
   <strong>AI-powered apartment hunting platform for Israeli university students</strong><br>
-  Real-time budget analysis · Yad2 &amp; Facebook scraping · Municipal tax calculations · Government data integration
+  Real-time budget analysis · Yad2 &amp; Facebook scraping · Municipal tax calculations · Government data integration<br>
+  Click here: https://yair-fr.github.io/unisafe/
 </p>
 
 <p align="center">

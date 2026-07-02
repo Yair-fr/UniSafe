@@ -1,2362 +1,996 @@
 <!DOCTYPE html>
-
 <html class="light" lang="en">
-
 <head>
-
     <meta charset="utf-8"/>
-
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>UniSafe - The Financial Survival Engine</title>
-
     <!-- Google Fonts -->
-
     <link href="https://fonts.googleapis.com" rel="preconnect"/>
-
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Outfit:wght@600;700;800;900&amp;display=swap" rel="stylesheet"/>
-
     <!-- Material Symbols -->
-
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-
     <!-- Tailwind CSS -->
-
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-
     <!-- Alpine.js -->
-
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
     
-
     <script id="tailwind-config">
-
         tailwind.config = {
-
             darkMode: "class",
-
             theme: {
-
                 extend: {
-
                     colors: {
-
                         "surface-container": "#efeded",
-
                         "error": "#ba1a1a",
-
                         "surface-tint": "#4f6350",
-
                         "secondary-fixed-dim": "#c7c6c5",
-
                         "on-tertiary-container": "#baddc0",
-
                         "inverse-on-surface": "#f2f0f0",
-
                         "secondary-container": "#e1dfde",
-
                         "primary-fixed-dim": "#b6ccb5",
-
                         "secondary": "#5e5e5e",
-
                         "tertiary-fixed": "#c8ebcd",
-
                         "surface-bright": "#fbf9f8",
-
                         "surface-dim": "#dbdad9",
-
                         "on-surface": "#1b1c1c",
-
                         "primary": "#364937",
-
                         "tertiary": "#2d4b35",
-
                         "surface-container-low": "#f5f3f3",
-
                         "outline": "#737872",
-
                         "surface": "#fbf9f8",
-
                         "error-container": "#ffdad6",
-
                         "surface-container-highest": "#e3e2e2",
-
                         "on-secondary-fixed-variant": "#464746",
-
                         "tertiary-container": "#44634b",
-
                         "on-primary-container": "#c4dbc3",
-
                         "on-tertiary-fixed-variant": "#2f4d37",
-
                         "background": "#fbf9f8",
-
                         "on-tertiary-fixed": "#02210e",
-
                         "on-surface-variant": "#434842",
-
                         "secondary-text": "#6D7271",
-
                         "on-primary-fixed-variant": "#384b3a",
-
                         "secondary-fixed": "#e4e2e1",
-
                         "on-error": "#ffffff",
-
                         "safe-zone": "#5A7A61",
-
                         "outline-variant": "#c3c8c0",
-
                         "on-background": "#1b1c1c",
-
                         "surface-variant": "#e3e2e2",
-
                         "on-secondary": "#ffffff",
-
                         "on-secondary-fixed": "#1b1c1b",
-
                         "tertiary-fixed-dim": "#accfb2",
-
                         "primary-container": "#4d614e",
-
                         "on-primary": "#ffffff",
-
                         "surface-container-lowest": "#ffffff",
-
                         "on-error-container": "#93000a",
-
                         "on-primary-fixed": "#0d1f11",
-
                         "inverse-primary": "#b6ccb5",
-
                         "on-tertiary": "#ffffff",
-
                         "primary-fixed": "#d2e9d0",
-
                         "on-secondary-container": "#636262",
-
                         "inverse-surface": "#303030",
-
                         "critical-zone": "#C86B62",
-
                         "surface-container-high": "#e9e8e7"
-
                     },
-
                     borderRadius: {
-
                         "DEFAULT": "0.25rem",
-
                         "lg": "0.5rem",
-
                         "xl": "0.75rem",
-
                         "full": "9999px"
-
                     },
-
                     spacing: {
-
                         "xl": "32px",
-
                         "gutter": "16px",
-
                         "unit": "4px",
-
                         "md": "16px",
-
                         "sm": "8px",
-
                         "container-margin": "24px",
-
                         "xs": "4px",
-
                         "lg": "24px"
-
                     },
-
                     fontFamily: {
-
                         "headline-lg": ["Outfit"],
-
                         "body-md": ["Inter"],
-
                         "body-lg": ["Inter"],
-
                         "headline-lg-mobile": ["Outfit"],
-
                         "label-md": ["Inter"],
-
                         "headline-md": ["Outfit"],
-
                         "headline-xl": ["Outfit"],
-
                         "label-sm": ["Inter"]
-
                     }
-
                 }
-
             }
-
         }
-
     </script>
-
     
-
     <style>
-
+        /* Header container */
+        .header {
+          position: fixed; /* Keep on top */
+          top: 0;
+          left:0;
+          right:0;
+          width: 100%;
+          z-index: 1000; /* Higher value */
+        }
+        
+        /* Main Content area */
+       main{
+            padding-top:90px;
+        }
         .material-symbols-outlined {
-
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-
         }
-
         .glass-card {
-
             background: rgba(255, 255, 255, 0.90);
-
             backdrop-filter: blur(20px) saturate(120%);
-
             -webkit-backdrop-filter: blur(20px) saturate(120%);
-
             border: 1px solid rgba(255, 255, 255, 0.5);
-
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
-
         }
-
         .readable-backdrop {
-
             background: rgba(0, 0, 0, 0.25);
-
             backdrop-filter: blur(4px);
-
             -webkit-backdrop-filter: blur(4px);
-
             border: 1px solid rgba(255, 255, 255, 0.1);
-
         }
-
         .zoom-home {
-
             transform: scale(1.06) translate(4%, 0%);
-
             filter: blur(0px) brightness(0.65);
-
         }
-
         .zoom-dashboard {
-
             transform: scale(1.9) translate(18%, 10%);
-
             filter: blur(3px) brightness(0.35);
-
         }
-
         .zoom-matcher {
-
             transform: scale(2.5) translate(-18%, -15%);
-
             filter: blur(4px) brightness(0.3);
-
         }
-
         .card-transition {
-
             transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.15);
-
         }
-
         .flick-transition {
-
             transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
-
+        }
+        /* global CSS selector */
+        img, video, iframe {
+          max-width: 100%;
+          height: auto;
+          display: block;
         }
 
+        
     </style>
-
 </head>
-
 <body class="bg-[#0b0c0c] text-on-surface font-body-md antialiased h-screen w-screen flex flex-col justify-between overflow-hidden relative" 
-
       x-data="uniSafeApp()" 
-
       @keydown.arrow-left.window="triggerKeyboardSwipe('left')" 
-
       @keydown.arrow-right.window="triggerKeyboardSwipe('right')">
 
-
-
     <!-- Immersive Animated Background Image -->
-
     <div class="fixed inset-0 overflow-hidden -z-20 bg-black">
-
         <img src="images/comfort_choice.png" 
-
              alt="Cozy Student Room" 
-
              class="w-full h-full object-cover transition-all duration-[1200ms] ease-in-out origin-center"
-
              :class="getZoomClass()">
-
     </div>
-
-
 
     <!-- Top Navigation App Bar -->
+<header class="glass-card sticky top-0 z-50 w-full border-b border-white/20">
 
-    <header class="glass-card w-full z-50 border-b border-white/20 flex-shrink-0">
+    <div class="max-w-[1200px] mx-auto flex items-center justify-between gap-2 px-container-margin py-3">
 
-        <div class="flex justify-between items-center w-full px-container-margin py-3 max-w-[1200px] mx-auto">
+        <!-- Logo -->
+        <div
+            class="flex items-center gap-2 flex-1 min-w-0 cursor-pointer"
+            @click="activeTab = 'home'">
 
-            <div class="flex items-center gap-md cursor-pointer" @click="activeTab = 'home'">
+            <img
+                src="images/unisafe_logo.png"
+                alt="UniSafe Owl Mascot Logo"
+                class="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 object-contain rounded-full shadow-lg border-2 border-primary">
 
-                <img alt="UniSafe Owl Mascot Logo" class="h-16 w-16 object-contain rounded-full shadow-lg border-2 border-primary" src="images/unisafe_logo.png"/>
-
-                <div>
-
-                    <span class="text-3xl font-black text-primary block tracking-tight leading-none">UniSafe</span>
-
-                    <span class="text-[10px] text-[#4d614e] tracking-wider uppercase font-extrabold mt-1 block">Financial & Housing Platform</span>
-
-                </div>
-
+            <!-- Mobile -->
+            <div class="hidden min-w-0">
+                <span class="block text-lg font-black text-primary truncate">
+                    UniSafe
+                </span>
             </div>
 
-            
-
-            <nav class="hidden md:flex gap-md items-center bg-[#F0ECE9]/85 p-1 rounded-full border border-gray-200 shadow-inner">
-
-                <button @click="activeTab = 'home'" :class="activeTab === 'home' ? 'bg-primary text-white font-bold' : 'text-on-surface-variant hover:text-primary'" class="px-6 py-2.5 rounded-full text-xs font-bold transition-all duration-200">
-
-                    Home
-
-                </button>
-
-                <button @click="activeTab = 'dashboard'" :class="activeTab === 'dashboard' ? 'bg-primary text-white font-bold' : 'text-on-surface-variant hover:text-primary'" class="px-6 py-2.5 rounded-full text-xs font-bold transition-all duration-200">
-
-                    Dashboard
-
-                </button>
-
-                <button @click="activeTab = 'matcher'" :class="activeTab === 'matcher' ? 'bg-primary text-white font-bold' : 'text-on-surface-variant hover:text-primary'" class="px-6 py-2.5 rounded-full text-xs font-bold transition-all duration-200">
-
-                    Property Matcher
-
-                </button>
-
-            </nav>
-
-
-
-            <div class="flex items-center gap-sm">
-
-                <!-- User Swipes Indicator & Plan Status -->
-
-                <div class="bg-primary/10 border border-primary/20 rounded-full px-4 py-1.5 flex items-center gap-2">
-
-                    <span class="text-xs font-bold text-primary capitalize" x-text="`${userPlan} Plan`"></span>
-
-                    <span class="w-1 h-1 rounded-full bg-primary/40"></span>
-
-                    <span class="text-xs font-bold text-primary-container" x-text="userPlan === 'vip' ? '∞ Swipes' : `${swipesToday}/${maxSwipes} Swipes`"></span>
-
-                </div>
-
-                <button @click="showPricing = true" class="bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs px-4 py-2 rounded-full shadow transition">
-
-                    ⭐ Upgrade
-
-                </button>
-
-                <button @click="showHelp = true" class="h-10 w-10 flex items-center justify-center bg-[#F0ECE9] hover:bg-[#E2DDD9] rounded-full text-lg shadow-sm transition" title="Show Help Modal">
-
-                    ❓
-
-                </button>
-
+            <!-- Desktop -->
+            <div class="hidden md:block overflow-hidden min-w-0">
+                <span class="block text-2xl md:text-3xl font-black text-primary tracking-tight leading-none truncate">
+                    UniSafe
+                </span>
+                <span class="block text-[10px] text-[#4d614e] tracking-wider uppercase font-extrabold truncate">
+                    Financial &amp; Housing Platform
+                </span>
             </div>
 
         </div>
 
-    </header>
+        <!-- Desktop Navigation -->
+        <nav class="hidden lg:flex gap-md items-center bg-[#F0ECE9]/85 p-1 rounded-full border border-gray-200 shadow-inner">
 
+            <button
+                @click="activeTab = 'home'"
+                :class="activeTab === 'home' ? 'bg-primary text-white font-bold' : 'text-on-surface-variant hover:text-primary'"
+                class="px-6 py-2.5 rounded-full text-xs transition">
+                Home
+            </button>
 
+            <button
+                @click="activeTab = 'dashboard'"
+                :class="activeTab === 'dashboard' ? 'bg-primary text-white font-bold' : 'text-on-surface-variant hover:text-primary'"
+                class="px-6 py-2.5 rounded-full text-xs transition">
+                Dashboard
+            </button>
 
-    <!-- Mobile Navigation Bar -->
+            <button
+                @click="activeTab = 'matcher'"
+                :class="activeTab === 'matcher' ? 'bg-primary text-white font-bold' : 'text-on-surface-variant hover:text-primary'"
+                class="px-6 py-2.5 rounded-full text-xs transition">
+                Property Matcher
+            </button>
 
-    <div class="md:hidden fixed bottom-4 left-4 right-4 z-40 bg-white/95 backdrop-blur border border-gray-200 rounded-full shadow-lg p-1.5 flex justify-around">
+        </nav>
 
-        <button @click="activeTab = 'home'" :class="activeTab === 'home' ? 'bg-primary text-white' : 'text-gray-500'" class="flex-1 py-2.5 rounded-full text-center text-xs font-bold transition">
+        <!-- Right Side -->
+        <div class="flex items-center gap-2 shrink-0">
 
-            🏠 Home
+            <!-- Plan -->
+            <div class="bg-primary/10 border border-primary/20 rounded-full px-2 sm:px-4 py-1.5 flex items-center gap-1 sm:gap-2">
 
-        </button>
+                <span
+                    class="hidden sm:inline text-xs font-bold text-primary capitalize"
+                    x-text="`${userPlan} Plan`">
+                </span>
 
-        <button @click="activeTab = 'dashboard'" :class="activeTab === 'dashboard' ? 'bg-primary text-white' : 'text-gray-500'" class="flex-1 py-2.5 rounded-full text-center text-xs font-bold transition">
+                <span class="hidden sm:block w-1 h-1 rounded-full bg-primary/40"></span>
 
-            📊 Board
+                <span
+                    class="text-xs font-bold text-primary-container whitespace-nowrap"
+                    x-text="userPlan === 'vip' ? '∞' : `${swipesToday}/${maxSwipes}`">
+                </span>
 
-        </button>
+            </div>
 
-        <button @click="activeTab = 'matcher'" :class="activeTab === 'matcher' ? 'bg-primary text-white' : 'text-gray-500'" class="flex-1 py-2.5 rounded-full text-center text-xs font-bold transition">
+            <!-- Upgrade -->
+            <button
+                @click="showPricing = true"
+                class="bg-amber-600 hover:bg-amber-700 text-white rounded-full px-3 md:px-4 py-2 text-xs font-bold transition">
 
-            🔍 Match
+                ⭐
+                <span class="hidden sm:inline">Upgrade</span>
 
-        </button>
+            </button>
+
+            <!-- Help -->
+            <button
+                @click="showHelp = true"
+                class="w-9 h-9 md:w-10 md:h-10 flex items-center justify-center rounded-full bg-[#F0ECE9] hover:bg-[#E2DDD9] shadow-sm transition">
+
+                ❓
+
+            </button>
+
+        </div>
 
     </div>
 
+</header>
 
+    <!-- Mobile Navigation Bar -->
+    <div class="md:hidden fixed bottom-4 left-4 right-4 z-40 bg-white/95 backdrop-blur border border-gray-200 rounded-full shadow-lg p-1.5 flex justify-around">
+        <button @click="activeTab = 'home'" :class="activeTab === 'home' ? 'bg-primary text-white' : 'text-gray-500'" class="flex-1 py-2.5 rounded-full text-center text-xs font-bold transition">
+            🏠 Home
+        </button>
+        <button @click="activeTab = 'dashboard'" :class="activeTab === 'dashboard' ? 'bg-primary text-white' : 'text-gray-500'" class="flex-1 py-2.5 rounded-full text-center text-xs font-bold transition">
+            📊 Board
+        </button>
+        <button @click="activeTab = 'matcher'" :class="activeTab === 'matcher' ? 'bg-primary text-white' : 'text-gray-500'" class="flex-1 py-2.5 rounded-full text-center text-xs font-bold transition">
+            🔍 Match
+        </button>
+    </div>
 
     <!-- Main Content Canvas -->
-
-    <main class="flex-grow flex items-center justify-center p-container-margin relative z-10 overflow-hidden w-full h-[calc(100vh-88px-56px)]">
-
-
+    <!-- <main class="flex-grow flex items-center justify-center p-container-margin relative z-10 overflow-hidden w-full h-[calc(100vh-88px-56px)]"> -->
+    <main class="flex-grow flex items-center justify-center p-container-margin pt-24 relative z-10 overflow-hidden w-full h-[calc(100vh-88px-56px)]">
 
         <!-- SCREEN A: HOME / BUDGET GATE -->
-
         <div x-show="activeTab === 'home'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-95" class="max-w-[1200px] w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-xl items-center h-full overflow-y-auto py-4">
-
             
-
             <div class="flex flex-col gap-md z-10 text-white md:text-left text-center readable-backdrop p-5 rounded-2xl max-w-sm lg:max-w-[350px] self-center">
-
                 <h1 class="text-2xl font-bold tracking-tight text-white leading-tight">
-
                     Stop Guessing Rent.<br/>
-
                     <span class="text-[#c4dbc3]">Know Your Budget.</span>
-
                 </h1>
-
                 <p class="text-[15px] text-white font-medium leading-relaxed opacity-95">
-
                     UniSafe evaluates your survival index across multiple campuses in Israel using municipal tax database mappings and real-time Central Bureau of Statistics indices.
-
                 </p>
-
                 <div class="flex items-center gap-xs text-gray-200 text-[10px] font-semibold border-t border-white/10 pt-3">
-
                     <span class="material-symbols-outlined text-green-400 text-sm">check_circle</span>
-
                     Yad2 & Facebook Marketplace live scraper integrated
-
                 </div>
-
             </div>
-
             
-
             <div class="relative w-full max-w-md mx-auto lg:ml-auto group z-20">
-
                 <div class="absolute -inset-1 bg-gradient-to-r from-primary-fixed to-tertiary-fixed rounded-2xl blur opacity-30 group-hover:opacity-50 transition duration-1000"></div>
-
                 <div class="glass-card rounded-2xl p-xl shadow-level-1 border border-surface-variant flex flex-col gap-lg transition-transform duration-300 hover:-translate-y-1 hover:shadow-level-2">
-
                     <div class="flex items-center justify-between border-b border-surface-variant pb-md">
-
                         <h2 class="text-headline-md font-headline-md text-primary">Budget Assessment</h2>
-
                         <span class="material-symbols-outlined text-primary-container text-3xl">account_balance_wallet</span>
-
                     </div>
-
                     
-
                     <div class="flex flex-col gap-md">
-
                         <div class="flex flex-col gap-xs">
-
                             <label class="text-label-md font-label-md text-on-surface-variant" for="income">Net Monthly Budget (₪)</label>
-
                             <div class="relative bg-white rounded-lg border border-outline-variant">
-
                                 <div class="absolute inset-y-0 left-0 pl-md flex items-center pointer-events-none">
-
                                     <span class="text-on-surface-variant font-medium">₪</span>
-
                                 </div>
-
                                 <input class="w-full pl-xl pr-md py-md bg-transparent border-0 rounded-lg text-body-lg font-body-lg text-on-surface focus:ring-0 focus:outline-none" id="income" x-model.number="budget" type="number"/>
-
                             </div>
-
                         </div>
-
                         
-
                         <div class="flex flex-col gap-xs mt-sm">
-
                             <label class="text-label-md font-label-md text-on-surface-variant" for="campus">Select Campus</label>
-
                             <div class="relative bg-white rounded-lg border border-outline-variant">
-
                                 <select class="appearance-none w-full px-md py-md bg-transparent border-0 rounded-lg text-body-lg font-body-lg text-on-surface focus:ring-0 focus:outline-none cursor-pointer" id="campus" x-model="campus">
-
                                     <option value="biu">Bar-Ilan University</option>
-
                                     <option value="tau">Tel Aviv University</option>
-
                                     <option value="bgu">Technion / Haifa Hubs</option>
-
                                 </select>
-
                                 <div class="absolute inset-y-0 right-0 pr-md flex items-center pointer-events-none text-on-surface-variant">
-
                                     <span class="material-symbols-outlined">expand_more</span>
-
                                 </div>
-
                             </div>
-
                         </div>
-
                         
-
                         <button @click="activeTab = 'dashboard'" class="mt-md w-full bg-primary-container text-on-primary py-[16px] px-lg rounded-lg text-headline-md font-headline-md text-[20px] font-bold hover:bg-primary transition-colors flex items-center justify-center gap-sm group/btn shadow-md active:scale-[0.98]">
-
                             Analyze Sustainability
-
                             <span class="material-symbols-outlined transition-transform group-hover/btn:translate-x-1">arrow_forward</span>
-
                         </button>
-
                     </div>
-
                 </div>
-
             </div>
-
-
 
         </div>
-
-
 
         <!-- SCREEN B: DYNAMIC BREAKDOWN DASHBOARD -->
-
         <div x-show="activeTab === 'dashboard'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-95" class="max-w-[1200px] w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-xl h-full items-center overflow-y-auto py-4">
-
             
-
             <div class="lg:col-span-12 mb-sm text-white readable-backdrop p-4 rounded-2xl flex flex-col md:flex-row md:justify-between md:items-center">
-
                 <div>
-
                     <h1 class="text-3xl font-bold text-white leading-tight">Your Financial Dashboard</h1>
-
                     <p class="text-sm text-gray-200">
-
                         Monthly threshold mapping and cost estimations based on latest Israeli CBS API multiplier.
-
                     </p>
-
                 </div>
-
                 <div class="mt-3 md:mt-0 flex gap-2">
-
                     <div class="flex items-center bg-white/10 px-3 py-1.5 rounded-xl border border-white/10">
-
                         <span class="text-xs text-gray-300 mr-2">Budget:</span>
-
                         <input type="number" x-model.number="budget" class="w-16 bg-transparent text-xs text-white font-bold border-0 p-0 focus:ring-0 focus:outline-none">
-
                         <span class="text-xs text-white ml-0.5">₪</span>
-
                     </div>
-
                 </div>
-
             </div>
-
             
-
             <div class="lg:col-span-8 flex flex-col gap-lg h-full max-h-[55vh] overflow-y-auto">
-
                 <div class="glass-card rounded-xl p-6 shadow-level-1 border border-surface-container-highest">
-
                     <div class="flex justify-between items-center mb-md">
-
                         <h2 class="text-headline-md font-headline-md text-on-surface">Allocated Cost Breakdowns</h2>
-
                         <span class="text-label-md font-label-md bg-tertiary-fixed text-on-tertiary-fixed px-sm py-xs rounded-full flex items-center gap-xs">
-
                             <span class="material-symbols-outlined text-[16px]">check_circle</span> Safe Zone Threshold (65%)
-
                         </span>
-
                     </div>
-
                     
-
                     <div class="h-4 w-full bg-surface-container rounded-full mb-md overflow-hidden flex shadow-inner">
-
                         <div class="h-full bg-primary" style="width: 35%"></div>
-
                         <div class="h-full bg-[#44634b]" style="width: 10%"></div>
-
                         <div class="h-full bg-yellow-600" style="width: 7%"></div>
-
                         <div class="h-full bg-purple-600" style="width: 13%"></div>
-
                         <div class="h-full bg-safe-zone" style="width: 35%"></div>
-
                     </div>
-
                     
-
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-
                         <div class="flex items-center justify-between p-2.5 bg-white/70 hover:bg-white rounded-xl border border-[#EAE7E5]">
-
                             <div class="flex items-center gap-sm">
-
                                 <div class="w-3 h-3 rounded-full bg-primary"></div>
-
                                 <div>
-
                                     <p class="text-xs font-bold text-on-surface">Rent Target (35%)</p>
-
                                 </div>
-
                             </div>
-
                             <p class="text-xs font-bold text-on-surface" x-text="formatNIS(budget * 0.35)"></p>
-
                         </div>
-
                                     <div @click="showUtilitiesDetails = !showUtilitiesDetails; showGroceryDetails = false" class="flex flex-col p-2.5 bg-white/70 hover:bg-white rounded-xl border border-[#EAE7E5] cursor-pointer transition-all duration-200">
-
                             <div class="flex items-center justify-between w-full">
-
                                 <div class="flex items-center gap-sm">
-
                                     <div class="w-3.5 h-3.5 rounded-full bg-[#44634b]"></div>
-
                                     <div>
-
                                         <p class="text-xs font-bold text-on-surface">Utilities index (10%) ▾</p>
-
                                     </div>
-
                                 </div>
-
                                 <p class="text-xs font-bold text-on-surface" x-text="formatNIS(budget * 0.10)"></p>
-
                             </div>
-
                             <div x-show="showUtilitiesDetails" class="mt-2 pl-6 text-[11px] text-on-surface-variant space-y-1 border-t border-gray-100 pt-2">
-
                                 <ul class="list-disc space-y-0.5 text-gray-600 font-medium">
-
                                     <li>⚡ Electricity (Est.): <span class="font-bold text-gray-800" x-text="formatNIS(budget * 0.10 * 0.45)"></span></li>
-
                                     <li>💧 Water Municipal (Est.): <span class="font-bold text-gray-800" x-text="formatNIS(budget * 0.10 * 0.20)"></span></li>
-
                                     <li>🌐 WiFi & Home Internet: <span class="font-bold text-gray-800" x-text="formatNIS(budget * 0.10 * 0.20)"></span></li>
-
                                     <li>🔥 Cooking Gas (Est.): <span class="font-bold text-gray-800" x-text="formatNIS(budget * 0.10 * 0.15)"></span></li>
-
                                 </ul>
-
                             </div>
-
                         </div>
-
  
-
                         <div class="flex items-center justify-between p-2.5 bg-white/70 hover:bg-white rounded-xl border border-[#EAE7E5]">
-
                             <div class="flex items-center gap-sm">
-
                                 <div class="w-3.5 h-3.5 rounded-full bg-yellow-600"></div>
-
                                 <div>
-
                                     <p class="text-xs font-bold text-on-surface">Municipal Tax / Arnona (7%)</p>
-
                                 </div>
-
                             </div>
-
                             <p class="text-xs font-bold text-on-surface" x-text="formatNIS(budget * 0.07)"></p>
-
                         </div>
-
  
-
                         <div @click="showGroceryDetails = !showGroceryDetails; showUtilitiesDetails = false" class="flex flex-col p-2.5 bg-white/70 hover:bg-white rounded-xl border border-[#EAE7E5] cursor-pointer transition-all duration-200 font-body-md">
-
                             <div class="flex items-center justify-between w-full">
-
                                 <div class="flex items-center gap-sm">
-
                                     <div class="w-3.5 h-3.5 rounded-full bg-purple-600"></div>
-
                                     <div>
-
                                         <p class="text-xs font-bold text-on-surface">Grocery Cost Index (13%) ▾</p>
-
                                     </div>
-
                                 </div>
-
                                 <p class="text-xs font-bold text-on-surface" x-text="formatNIS(budget * 0.13)"></p>
-
                             </div>
-
                             <div x-show="showGroceryDetails" class="mt-2 pl-6 text-[11px] text-on-surface-variant space-y-1 border-t border-gray-100 pt-2">
-
                                 <div class="text-[9px] text-gray-400 font-bold uppercase tracking-wider mb-1">Estimated Local Basket Prices:</div>
-
                                 <ul class="list-disc space-y-0.5 text-gray-600 font-medium">
-
                                     <li>🥛 Fresh Milk (1L): <span class="font-bold text-gray-800" x-text="campus === 'tau' ? '₪6.90' : (campus === 'biu' ? '₪6.40' : '₪6.20')"></span></li>
-
                                     <li>🥚 Eggs (12 pack, L): <span class="font-bold text-gray-800" x-text="campus === 'tau' ? '₪15.40' : (campus === 'biu' ? '₪14.50' : '₪13.90')"></span></li>
-
                                     <li>🍞 Sliced Bread (750g): <span class="font-bold text-gray-800" x-text="campus === 'tau' ? '₪8.60' : (campus === 'biu' ? '₪7.90' : '₪7.40')"></span></li>
-
                                     <li>🧀 Yellow Cheese (200g): <span class="font-bold text-gray-800" x-text="campus === 'tau' ? '₪16.80' : (campus === 'biu' ? '₪15.40' : '₪14.80')"></span></li>
-
                                 </ul>
-
                             </div>
-
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
-
             
-
             <div class="lg:col-span-4 flex flex-col gap-md">
-
                 <div class="glass-card rounded-xl p-5 shadow-level-1 border border-surface-container-highest">
-
                     <h3 class="text-lg font-bold text-on-surface mb-3 flex items-center gap-sm">
-
                         <span class="material-symbols-outlined text-primary">location_city</span>
-
                         Campuses Insight
-
                     </h3>
-
                     <div class="mb-4">
-
                         <span class="text-[9px] text-[#6D7271] font-bold block uppercase tracking-wider">Region Target</span>
-
                         <p class="text-lg font-black text-primary" x-text="campusName"></p>
-
                     </div>
-
                     <div class="bg-white/95 rounded-lg p-3 border border-[#EAE7E5] flex items-start gap-sm mb-3">
-
                         <span class="material-symbols-outlined text-primary mt-1 text-sm">info</span>
-
                         <div>
-
                             <p class="text-xs font-bold text-on-surface">Israel CBS CPI Index multiplier</p>
-
                             <p class="text-xs text-on-surface-variant" x-text="`${cpiMultiplier}x`"></p>
-
                         </div>
-
                     </div>
-
                 </div>
-
                 <button @click="activeTab = 'matcher'" class="w-full bg-primary-container text-on-primary py-3.5 rounded-xl font-bold hover:bg-primary transition shadow-md flex items-center justify-center space-x-2">
-
                     <span>Go To Room Matcher</span>
-
                     <span class="material-symbols-outlined text-sm">arrow_forward</span>
-
                 </button>
-
             </div>
-
         </div>
-
-
 
         <!-- SCREEN C: SWIPE PROPERTY MATCHER -->
-
         <div x-show="activeTab === 'matcher'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-95" class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-12 gap-8 items-center h-full overflow-y-auto py-4">
-
             
-
             <div class="md:col-span-7 flex flex-col items-center">
-
                 <div class="relative w-full max-w-[340px] h-[50vh] min-h-[380px] max-h-[440px] cursor-grab active:cursor-grabbing select-none"
-
                      @mousedown="startDrag($event)"
-
                      @mousemove="drag($event)"
-
                      @mouseup="endDrag()"
-
                      @mouseleave="endDrag()"
-
                      @touchstart="startDrag($event)"
-
                      @touchmove="drag($event)"
-
                      @touchend="endDrag()">
-
                     
-
                     <div class="absolute inset-0 bg-white/40 border border-white/20 rounded-3xl translate-y-3.5 scale-95 blur-[0.5px] shadow-sm -z-10"></div>
-
                     <div class="absolute inset-0 bg-white/60 border border-white/20 rounded-3xl translate-y-1.5 scale-98 blur-[0.2px] shadow-md -z-10"></div>
 
-
-
                     <div class="absolute inset-0 bg-white rounded-3xl border border-gray-300 flex flex-col overflow-hidden shadow-2xl cursor-pointer"
-
                           :class="isDragging ? '' : (isFlicking ? 'flick-transition' : 'card-transition')"
-
                           :style="cardTransform"
-
                           @dblclick="if (currentProperty() && currentProperty().link) window.open(currentProperty().link, '_blank')">
-
                         
-
                         <template x-if="currentProperty()">
-
                             <div class="w-full h-full flex flex-col justify-between relative">
-
                                 <!-- Source Platform Logo Badge (Yad2 or Facebook) -->
-
                                 <div class="absolute top-4 left-4 z-30">
-
                                     <span class="text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase flex items-center gap-1 shadow-md"
-
                                           :class="currentProperty().source === 'Facebook' ? 'bg-blue-600' : 'bg-orange-500'">
-
                                         <span x-text="currentProperty().source === 'Facebook' ? 'FB Rentals' : 'Yad2'"></span>
-
                                     </span>
-
                                 </div>
-
-
 
                                 <div class="absolute top-4 right-4 z-30">
-
                                     <span class="text-white font-label-sm text-[10px] px-3 py-1.5 rounded-full uppercase tracking-wider shadow-md font-bold flex items-center gap-xs backdrop-blur-sm border border-white/20"
-
                                           :class="currentProperty().is_safe ? 'bg-safe-zone/90' : 'bg-critical-zone/90'">
-
                                         <span x-text="currentProperty().is_safe ? 'Safe Spend' : 'Warning: High Burn'"></span>
-
                                     </span>
-
                                 </div>
-
-
 
                                 <div class="w-full h-2/3 bg-gray-200 relative">
-
                                     <img :src="currentProperty().image" alt="Rental listing" class="w-full h-full object-cover">
-
                                     <div class="absolute bottom-3 left-4 bg-black/55 backdrop-blur-sm py-1 px-3 rounded-full text-white text-[10px] font-bold">
-
                                         <span x-text="`${currentProperty().size} sqm`"></span>
-
                                     </div>
-
                                 </div>
-
-
 
                                 <div class="h-1/3 bg-white/95 border-t border-gray-200 p-3.5 flex flex-col justify-between">
-
                                     <div>
-
                                         <h3 class="font-extrabold text-base text-gray-800 leading-tight" x-text="currentProperty().title"></h3>
-
                                         <div class="flex justify-between items-center mt-1">
-
                                             <p class="text-[10px] text-[#6D7271] font-semibold" x-text="`Address: ${currentProperty().location}`"></p>
-
-                                            <a :href="currentProperty()?.link || '#'" target="_blank" class="text-blue-500 underline">Link 🔗</a>                                        </div>
-
+                                            <a :href="currentProperty().link" target="_blank" class="text-[10px] text-blue-600 underline font-bold hover:text-blue-800" @click.stop>Link 🔗</a>
+                                        </div>
                                     </div>
-
                                     <div class="flex justify-between items-center bg-gray-50 border p-2 rounded-xl">
-
                                         <div>
-
                                             <span class="text-[8px] text-gray-400 font-bold block uppercase tracking-wider">True Monthly Burn</span>
-
                                             <span class="text-base font-black text-primary" x-text="formatNIS(currentProperty().total_burn)"></span>
-
                                         </div>
-
                                         <div class="text-right">
-
                                             <span class="text-[8px] text-gray-400 font-bold block uppercase tracking-wider">Base Rent</span>
-
                                             <span class="text-xs font-semibold text-gray-600" x-text="formatNIS(currentProperty().rent)"></span>
-
                                         </div>
-
                                     </div>
-
                                 </div>
-
                             </div>
-
                         </template>
-
-
 
                         <template x-if="!currentProperty()">
-
                             <div class="w-full h-full p-6 flex flex-col justify-center items-center text-center space-y-4 bg-gray-50/90">
-
                                 <span class="material-symbols-outlined text-5xl text-gray-400">info</span>
-
                                 <h3 class="font-bold text-gray-700 text-sm">No Apartments Remaining</h3>
-
                                 <p class="text-xs text-gray-500 max-w-[220px]">Try increasing your budget parameter or toggling limits.</p>
-
                                 <button @click="filterByBudget = false" class="px-4 py-2 bg-primary text-white text-xs font-bold rounded-lg shadow hover:opacity-90 transition">View All Listings</button>
-
                             </div>
-
                         </template>
 
-
-
                     </div>
-
                 </div>
-
-
 
                 <div class="flex gap-4 mt-4 justify-center w-full max-w-[340px] z-10">
-
                     <button @click="animateSwipe('left')" class="w-14 h-14 rounded-full bg-white shadow-lg border border-[#C86B62] flex items-center justify-center text-[#C86B62] hover:bg-[#C86B62] hover:text-white active:scale-90 transition-all duration-200">
-
                         <span class="material-symbols-outlined text-2xl">close</span>
-
                     </button>
-
                     <button @click="activeTab = 'dashboard'" class="px-4 py-2 rounded-full bg-white border border-gray-300 text-on-surface font-label-md text-[10px] font-bold flex items-center gap-xs hover:bg-gray-50 transition shadow-md">
-
                         <span class="material-symbols-outlined text-sm">info</span> Breakdown
-
                     </button>
-
                     <button @click="animateSwipe('right')" class="w-14 h-14 rounded-full bg-white shadow-lg border border-safe-zone flex items-center justify-center text-safe-zone hover:bg-safe-zone hover:text-white active:scale-90 transition-all duration-200">
-
                         <span class="material-symbols-outlined text-2xl">thumb_up</span>
-
                     </button>
-
                 </div>
-
             </div>
-
-
 
             <div class="md:col-span-5 space-y-4 h-full max-h-[58vh] overflow-y-auto pr-1">
-
                 <div class="glass-card rounded-2xl p-4 shadow-lg flex items-center justify-between">
-
                     <div>
-
                         <h3 class="font-bold text-xs text-gray-700 uppercase">Within Budget Limit Only</h3>
-
                         <p class="text-[9px] text-[#6D7271]">Filter properties matching budget (₪<span x-text="budget"></span>)</p>
-
                     </div>
-
                     <button @click="filterByBudget = !filterByBudget" 
-
                             :class="filterByBudget ? 'bg-primary' : 'bg-gray-300'" 
-
                             class="w-12 h-6 rounded-full p-1 transition-colors duration-200 focus:outline-none flex items-center relative shadow-inner">
-
                         <div :class="filterByBudget ? 'translate-x-6' : 'translate-x-0'" 
-
                              class="bg-white w-4 h-4 rounded-full shadow transition-transform duration-200"></div>
-
                     </button>
-
                 </div>
-
-
 
                 <div class="glass-card rounded-2xl p-4 shadow-lg space-y-3">
-
                     <h3 class="font-bold text-xs text-[#6D7271] uppercase tracking-wider flex justify-between">
-
                         <span>Shortlisted Items</span>
-
                         <span class="bg-primary text-white px-2 py-0.5 rounded text-[10px]" x-text="savedMatches.length"></span>
-
                     </h3>
-
                     
-
                     <div class="space-y-2 max-h-[180px] overflow-y-auto">
-
                         <template x-if="savedMatches.length === 0">
-
                             <p class="text-xs text-[#6D7271] italic py-2 text-center">Swipe right to save matches.</p>
-
                         </template>
-
                         <template x-for="item in savedMatches" :key="item.id">
-
                             <div class="bg-white border border-gray-200 rounded-xl p-2.5 flex justify-between items-center shadow-sm cursor-pointer"
-
                                  @dblclick="if (item.link) window.open(item.link, '_blank')">
-
                                 <div>
-
                                     <span class="font-bold text-xs text-gray-800 block" x-text="item.title"></span>
-
                                     <div class="flex items-center gap-2 mt-1">
-
                                         <span class="text-[9px] text-green-700 font-bold" x-text="`Burn: ${formatNIS(item.total_burn)}`"></span>
-
                                         <a :href="item.link" target="_blank" class="text-[9px] text-blue-600 underline font-bold hover:text-blue-800" @click.stop>Link 🔗</a>
-
                                     </div>
-
                                 </div>
-
                                 <button @click="removeSaved(item)" class="text-red-500 hover:text-red-700 text-xs font-bold p-1">Remove</button>
-
                             </div>
-
                         </template>
-
                     </div>
-
                 </div>
-
             </div>
 
-
-
         </div>
-
-
 
     </main>
 
-
-
     <!-- PREMIUM MONETIZATION PRICING MODAL -->
-
     <div x-show="showPricing" class="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/60 backdrop-blur-sm" x-transition>
-
         <div class="bg-white rounded-3xl p-6 max-w-lg w-full shadow-2xl border border-gray-200 space-y-6">
-
             <div class="flex justify-between items-center border-b pb-3">
-
                 <div>
-
                     <h3 class="text-xl font-bold text-primary flex items-center gap-2">
-
                         <span>⭐ Upgrade to Premium Hunting</span>
-
                     </h3>
-
                     <p class="text-xs text-gray-500">Accelerate your search and bypass brokerage fees.</p>
-
                 </div>
-
                 <button @click="showPricing = false" class="text-gray-400 hover:text-gray-600 font-bold text-xl">✕</button>
-
             </div>
-
             
-
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-
                 <!-- Free Plan -->
-
                 <div class="border rounded-2xl p-4 flex flex-col justify-between hover:border-primary transition" :class="userPlan === 'free' ? 'border-2 border-primary/40 bg-primary/5' : ''">
-
                     <div>
-
                         <h4 class="font-bold text-sm text-gray-700">Free</h4>
-
                         <p class="text-[10px] text-gray-400 mt-1">Basic Search</p>
-
                         <p class="text-lg font-black text-gray-800 mt-2">₪0</p>
-
                         <p class="text-[10px] text-gray-500 mt-3">✓ 10 daily swipes</p>
-
                         <p class="text-[10px] text-gray-500 mt-1">✓ Basic calculation</p>
-
                     </div>
-
                     <button @click="subscribeTo('free')" class="w-full mt-4 bg-gray-200 hover:bg-gray-300 text-gray-800 text-xs font-bold py-2 rounded-xl">
-
                         Select Free
-
                     </button>
-
                 </div>
-
-
 
                 <!-- Premium Standard -->
-
                 <div class="border rounded-2xl p-4 flex flex-col justify-between hover:border-amber-600 transition" :class="userPlan === 'premium' ? 'border-2 border-amber-600 bg-amber-50' : 'border-amber-500/30 bg-amber-500/5'">
-
                     <div>
-
                         <div class="bg-amber-600 text-white text-[8px] font-bold uppercase py-0.5 px-2 rounded-full inline-block">Popular</div>
-
                         <h4 class="font-bold text-sm text-amber-900 mt-1">Premium</h4>
-
                         <p class="text-[10px] text-amber-700 mt-1">Active Hunt</p>
-
                         <p class="text-lg font-black text-amber-900 mt-2">₪20 <span class="text-[10px] font-normal text-gray-500">/mo</span></p>
-
                         <p class="text-[10px] text-amber-800 mt-3">✓ 50 daily swipes</p>
-
                         <p class="text-[10px] text-amber-800 mt-1">✓ Fast Live Scrapes</p>
-
                     </div>
-
                     <button @click="subscribeTo('premium')" class="w-full mt-4 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold py-2 rounded-xl shadow">
-
                         Upgrade
-
                     </button>
-
                 </div>
-
-
 
                 <!-- VIP Premium -->
-
                 <div class="border rounded-2xl p-4 flex flex-col justify-between hover:border-purple-600 transition" :class="userPlan === 'vip' ? 'border-2 border-purple-600 bg-purple-50' : ''">
-
                     <div>
-
                         <h4 class="font-bold text-sm text-purple-900">VIP</h4>
-
                         <p class="text-[10px] text-purple-700 mt-1">Direct Brokerage Bypass</p>
-
                         <p class="text-lg font-black text-purple-900 mt-2">₪500 <span class="text-[10px] font-normal text-gray-500">/mo</span></p>
-
                         <p class="text-[10px] text-purple-800 mt-3">✓ Unlimited swipes</p>
-
                         <p class="text-[10px] text-purple-800 mt-1">✓ Automated land-lord reachout</p>
-
                     </div>
-
                     <button @click="subscribeTo('vip')" class="w-full mt-4 bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold py-2 rounded-xl shadow">
-
                         Go Unlimited
-
                     </button>
-
                 </div>
-
             </div>
-
             
-
             <p class="text-[9px] text-gray-400 text-center">Payments simulated for testing. Security powered by mock billing integrations.</p>
-
         </div>
-
     </div>
-
-
 
     <!-- HELP MODAL -->
-
     <div x-show="showHelp" class="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/60 backdrop-blur-sm" x-transition>
-
         <div class="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl border border-gray-200 space-y-4">
-
             <div class="flex justify-between items-center border-b pb-3">
-
                 <h3 class="text-xl font-bold text-primary">UniSafe Subscription Guide</h3>
-
                 <button @click="showHelp = false" class="text-gray-400 hover:text-gray-600 font-bold text-xl">✕</button>
-
             </div>
-
             <div class="text-sm text-gray-600 space-y-3 leading-relaxed">
-
                 <p><strong>Swipe limits:</strong></p>
-
                 <p>Each swipe (Left or Right) interacts with our server backend API endpoints to record swipes and enforce pricing tier logic:</p>
-
                 <ul class="list-disc pl-5 space-y-1">
-
                     <li><strong>Free Plan</strong>: 10 daily swipes max.</li>
-
                     <li><strong>Premium Standard (20 ₪)</strong>: 50 daily swipes.</li>
-
                     <li><strong>VIP Premium (500 ₪)</strong>: Unlimited daily swipes.</li>
-
                 </ul>
-
             </div>
-
             <div class="flex justify-end pt-2">
-
                 <button @click="showHelp = false" class="px-5 py-2 bg-primary-container text-on-primary font-bold rounded-xl shadow transition">
-
                     Got it!
-
                 </button>
-
             </div>
-
         </div>
-
     </div>
 
-
-
     <!-- Footer -->
-
     <footer class="glass-card py-3 text-center text-xs text-[#6D7271] border-t border-white/20 flex-shrink-0">
-
         <div class="max-w-[1200px] mx-auto px-container-margin flex flex-col md:flex-row justify-between items-center gap-sm">
-
             <span>&copy; 2026 UniSafe Inc.</span>
-
         </div>
-
     </footer>
 
-
-
     <!-- Alpine App Logic -->
-
-         <script>
-
+    <script>
         function uniSafeApp() {
-
             return {
-
-                activeTab: 'matcher',
-
-                showHelp: false,
-
-                showPricing: false,
-
-                showGroceryDetails: false,
-
-                showUtilitiesDetails: false,
-
-                budget: 4800,
-
-                campus: 'biu',
-
-                cpiMultiplier: 1.05,
-
-                campusName: 'Bar-Ilan University',
-
-                
-
-                // Subscription/Swipe system
-
-                userPlan: 'free',
-
-                swipesToday: 0,
-
-                maxSwipes: 10,
-
-
-
-                // Swiper parameters
-
-                currentCardIndex: 0,
-
-                isDragging: false,
-
-                offsetX: 0,
-
-                offsetY: 0,
-
-                startX: 0,
-
-                startY: 0,
-
-                cardTransform: '',
-
-                isFlicking: false,
-
-                savedMatches: [],
-
-                filterByBudget: true,
-
-
-
-                properties: [],
-
-                evaluatedProperties: [],
-
-
-
-                init() {
-
-                    this.updateCampusFactors();
-
-                    this.fetchUserStatus();
-
-                    this.fetchProperties();
-
-                    this.fetchCPI();
-
-
-
-                    this.$watch('budget', () => this.fetchProperties());
-
-                    this.$watch('campus', () => {
-
-                        this.updateCampusFactors();
-
-                        this.fetchProperties();
-
-                    });
-
-                },
-
-
-
-                fetchUserStatus() {
-
-                    // Static user data fallback
-
-                    this.userPlan = 'free';
-
-                    this.swipesToday = this.swipesToday || 0;
-
-                    this.maxSwipes = 10;
-
-                },
-
-
-
-                subscribeTo(tier) {
-
-                    this.userPlan = tier;
-
-                    this.maxSwipes = tier === 'free' ? 10 : (tier === 'premium' ? 30 : 9999);
-
-                    this.swipesToday = 0;
-
-                    this.showPricing = false;
-
-                },
-
-
-
-                fetchCPI() {
-
-                    this.cpiMultiplier = 1.05;
-
-                },
-
-
-
-                getCityByCampus() {
-
-                    if (this.campus === 'biu') return 'Ramat Gan';
-
-                    if (this.campus === 'tau') return 'Tel Aviv';
-
-                    if (this.campus === 'bgu') return 'Haifa';
-
-                    return 'Ramat Gan';
-
-                },
-
-
-
-                getZoneByCampus() {
-
-                    return 'Zone A';
-
-                },
-
-
-
-                fetchProperties() {
-
-                    // Hardcoded backend data pool
-
-                    this.properties = [
-
-                        {
-
-                            id: 1,
-
-                            title: "Studio Unit Bordering BIU Campus",
-
-                            location: "Ramat Gan, University District",
-
-                            rent: 3100,
-
-                            utilities: 450,
-
-                            arnona_base: 380,
-
-                            source: "Yad2",
-
-                            image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=600&q=80",
-
-                            link: "https://www.yad2.co.il" // Added property url parameter
-
-                        },
-
-                        {
-
-                            id: 2,
-
-                            title: "Modern 2-Room Apartment Suite",
-
-                            location: "Givatayim, City Center",
-
-                            rent: 4200,
-
-                            utilities: 600,
-
-                            arnona_base: 520,
-
-                            source: "Facebook Marketplace",
-
-                            image: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=600&q=80",
-
-                            link: "https://www.facebook.com/marketplace" // Added property url parameter
-
-                        },
-
-                        {
-
-                            id: 3,
-
-                            title: "Shared Sublet Student Housing Flat",
-
-                            location: "Bnei Brak, Southern Border",
-
-                            rent: 2400,
-
-                            utilities: 350,
-
-                            arnona_base: 290,
-
-                            source: "Yad2",
-
-                            image: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=600&q=80",
-
-                            link: "https://www.yad2.co.il" // Added property url parameter
-
-                        }
-
-                    ];
-
-                    this.evaluateProperties();
-
-                },
-
-
-
-                evaluateProperties() {
-
-                    // Mock local Pydantic evaluation rules
-
-                    this.evaluatedProperties = this.properties.map(prop => {
-
-                        const calculatedArnona = prop.arnona_base * 0.20; // 80% student discount rule
-
-                        const totalBurn = prop.rent + prop.utilities + calculatedArnona;
-
-                        return {
-
-                            ...prop,
-
-                            arnona_monthly: Math.round(calculatedArnona),
-
-                            total_burn: Math.round(totalBurn),
-
-                            is_safe: totalBurn <= this.budget
-
-                        };
-
-                    });
-
-                },
-
-
-
-                getZoomClass() {
-
-                    if (this.activeTab === 'home') return 'zoom-home';
-
-                    if (this.activeTab === 'dashboard') return 'zoom-dashboard';
-
-                    if (this.activeTab === 'matcher') return 'zoom-matcher';
-
-                    return 'zoom-home';
-
-                },
-
-
-
-                updateCampusFactors() {
-
-                    if (this.campus === 'biu') {
-
-                        this.campusName = 'Bar-Ilan University';
-
-                    } else if (this.campus === 'tau') {
-
-                        this.campusName = 'Tel Aviv University';
-
-                    } else if (this.campus === 'bgu') {
-
-                        this.campusName = 'Technion / Haifa Hubs';
-
-                    }
-
-                },
-
-
-
-                filteredProperties() {
-
-                    if (this.filterByBudget) {
-
-                        const maxBudget = parseFloat(this.budget) || 0;
-
-                        return this.evaluatedProperties.filter(prop => {
-
-                            const cost = parseFloat(prop.total_burn) || parseFloat(prop.rent) || 0;
-
-                            return cost <= maxBudget;
-
-                        });
-
-                    }
-
-                    return this.evaluatedProperties;
-
-                },
-
-
-
-                currentProperty() {
-
-                    const list = this.filteredProperties();
-
-                    if (list.length === 0) return null;
-
-                    return list[this.currentCardIndex % list.length];
-
-                },
-
-
-
-                startDrag(e) {
-
-                    if (this.isFlicking || this.filteredProperties().length === 0) return;
-
-                    this.isDragging = true;
-
-                    this.startX = e.clientX || (e.touches && e.touches[0].clientX);
-
-                    this.startY = e.clientY || (e.touches && e.touches[0].clientY);
-
-                },
-
-
-
-                drag(e) {
-
-                    if (!this.isDragging) return;
-
-                    if (e.cancelable) e.preventDefault();
-
-                    const x = e.clientX || (e.touches && e.touches[0].clientX);
-
-                    const y = e.clientY || (e.touches && e.touches[0].clientY);
-
-                    this.offsetX = x - this.startX;
-
-                    this.offsetY = y - this.startY;
-
-                    const rotate = this.offsetX * 0.08;
-
-                    this.cardTransform = `translate(${this.offsetX}px, ${this.offsetY}px) rotate(${rotate}deg)`;
-
-                },
-
-
-
-                endDrag() {
-
-                    if (!this.isDragging) return;
-
-                    this.isDragging = false;
-
-                    
-
-                    if (this.offsetX > 130) {
-
-                        this.flickOut('right');
-
-                    } else if (this.offsetX < -130) {
-
-                        this.flickOut('left');
-
-                    } else {
-
-                        this.resetCard();
-
-                    }
-
-                },
-
-
-
-                flickOut(dir) {
-
-                    // Local execution check replacing database requests
-
-                    if (this.swipesToday >= this.maxSwipes) {
-
-                        this.showPricing = true;
-
-                        this.resetCard();
-
-                        return;
-
-                    }
-
-
-
-                    this.swipesToday++;
-
-                    this.isFlicking = true;
-
-                    const screenWidth = window.innerWidth;
-
-                    const targetX = dir === 'right' ? screenWidth : -screenWidth;
-
-                    const rotate = dir === 'right' ? 35 : -35;
-
-                    this.cardTransform = `translate(${targetX}px, ${this.offsetY}px) rotate(${rotate}deg)`;
-
-                    
-
-                    setTimeout(() => {
-
-                        if (dir === 'right') {
-
-                            this.swipeRight();
-
-                        } else {
-
-                            this.swipeLeft();
-
-                        }
-
-                        this.cardTransform = 'scale(0.9) opacity-0';
-
-                        setTimeout(() => {
-
-                            this.cardTransform = '';
-
-                            this.offsetX = 0;
-
-                            this.offsetY = 0;
-
-                            this.isFlicking = false;
-
-                        }, 150);
-
-                    }, 250);
-
-                },
-
-
-
-                resetCard() {
-
-                    this.cardTransform = 'translate(0px, 0px) rotate(0deg)';
-
-                    setTimeout(() => {
-
-                        this.cardTransform = '';
-
-                        this.offsetX = 0;
-
-                        this.offsetY = 0;
-
-                    }, 200);
-
-                },
-
-
-
-                animateSwipe(dir) {
-
-                    if (this.isFlicking || this.filteredProperties().length === 0) return;
-
-                    this.flickOut(dir);
-
-                },
-
-
-
-                triggerKeyboardSwipe(dir) {
-
-                    if (this.activeTab === 'matcher') {
-
-                        this.animateSwipe(dir);
-
-                    }
-
-                },
-
-
-
-                swipeLeft() {
-
-                    this.nextCard();
-
-                },
-
-
-
-                swipeRight() {
-
-                    let prop = this.currentProperty();
-
-                    if (prop && !this.savedMatches.find(item => item.id === prop.id)) {
-
-                        this.savedMatches.push(prop);
-
-                    }
-
-                    this.nextCard();
-
-                },
-
-
-
-                nextCard() {
-
-                    const list = this.filteredProperties();
-
-                    if (list.length > 0) {
-
-                        this.currentCardIndex = (this.currentCardIndex + 1) % list.length;
-
-                    }
-
-                },
-
-
-
-                removeSaved(item) {
-
-                    this.savedMatches = this.savedMatches.filter(p => p.id !== item.id);
-
-                },
-
-
-
-                formatNIS(val) {
-
-                    if (typeof val !== 'number') return "0 ₪";
-
-                    return val.toLocaleString() + " ₪";
-
-                }
-
-            }
-
-        }
-
-    </script>
-
-    <!-- <script>
-
-        function uniSafeApp() {
-
-            return {
-
                 activeTab: 'home',
-
                 showHelp: false,
-
                 showPricing: false,
-
                 showGroceryDetails: false,
-
                 showUtilitiesDetails: false,
-
                 budget: 4800,
-
                 campus: 'biu',
-
                 cpiMultiplier: 1.05,
-
                 campusName: 'Bar-Ilan University',
-
                 
-
                 // Subscription/Swipe system
-
                 userPlan: 'free',
-
                 swipesToday: 0,
-
                 maxSwipes: 10,
 
-
-
                 // Swiper parameters
-
                 currentCardIndex: 0,
-
                 isDragging: false,
-
                 offsetX: 0,
-
                 offsetY: 0,
-
                 startX: 0,
-
                 startY: 0,
-
                 cardTransform: '',
-
                 isFlicking: false,
-
                 savedMatches: [],
-
                 filterByBudget: true,
 
-
-
                 properties: [],
-
                 evaluatedProperties: [],
 
-
-
                 init() {
-
                     this.updateCampusFactors();
-
                     this.fetchUserStatus();
-
                     this.fetchProperties();
-
                     this.fetchCPI();
 
-
-
                     this.$watch('budget', () => this.fetchProperties());
-
                     this.$watch('campus', () => {
-
                         this.updateCampusFactors();
-
                         this.fetchProperties();
-
                     });
-
                 },
-
-
 
                 fetchUserStatus() {
-
                     fetch('/api/user')
-
                         .then(res => res.json())
-
                         .then(data => {
-
                             this.userPlan = data.subscription_tier;
-
                             this.swipesToday = data.swipes_today;
-
                             this.maxSwipes = data.max_swipes;
-
                         });
-
                 },
-
-
 
                 subscribeTo(tier) {
-
                     fetch('/api/subscribe', {
-
                         method: 'POST',
-
                         headers: { 'Content-Type': 'application/json' },
-
                         body: JSON.stringify({ tier: tier })
-
                     })
-
                     .then(res => res.json())
-
                     .then(data => {
-
                         this.userPlan = data.tier;
-
                         this.maxSwipes = data.max_swipes;
-
                         this.swipesToday = 0;
-
                         this.showPricing = false;
-
                     });
-
                 },
-
-
 
                 fetchCPI() {
-
                     fetch('/api/cpi-index')
-
                         .then(res => res.ok ? res.json() : Promise.reject())
-
                         .then(data => {
-
                             this.cpiMultiplier = data.cpi_multiplier;
-
                         })
-
                         .catch(() => {
-
                             this.cpiMultiplier = 1.05;
-
                         });
-
                 },
-
-
 
                 getCityByCampus() {
-
                     if (this.campus === 'biu') return 'Ramat Gan';
-
                     if (this.campus === 'tau') return 'Tel Aviv';
-
                     if (this.campus === 'bgu') return 'Haifa';
-
                     return 'Ramat Gan';
-
                 },
-
-
 
                 getZoneByCampus() {
-
                     return 'Zone A';
-
                 },
-
-
 
                 fetchProperties() {
-
                     const city = this.getCityByCampus();
-
                     fetch(`/api/properties?city=${city}&budget=${this.budget}`)
-
                         .then(res => res.json())
-
                         .then(data => {
-
                             this.properties = data;
-
                             this.evaluateProperties();
-
                         });
-
                 },
-
-
 
                 evaluateProperties() {
-
                     const profile = {
-
                         budget: this.budget,
-
                         income: this.budget,
-
                         city: this.getCityByCampus(),
-
                         zone: this.getZoneByCampus()
-
                     };
-
                     
-
                     fetch('/api/evaluate', {
-
                         method: 'POST',
-
                         headers: { 'Content-Type': 'application/json' },
-
                         body: JSON.stringify({ profile: profile, properties: this.properties })
-
                     })
-
                     .then(res => res.json())
-
                     .then(data => {
-
                         this.evaluatedProperties = data;
-
                     });
-
                 },
-
-
 
                 getZoomClass() {
-
                     if (this.activeTab === 'home') return 'zoom-home';
-
                     if (this.activeTab === 'dashboard') return 'zoom-dashboard';
-
                     if (this.activeTab === 'matcher') return 'zoom-matcher';
-
                     return 'zoom-home';
-
                 },
-
-
 
                 updateCampusFactors() {
-
                     if (this.campus === 'biu') {
-
                         this.campusName = 'Bar-Ilan University';
-
                     } else if (this.campus === 'tau') {
-
                         this.campusName = 'Tel Aviv University';
-
                     } else if (this.campus === 'bgu') {
-
                         this.campusName = 'Technion / Haifa Hubs';
-
                     }
-
                 },
-
-
 
                 filteredProperties() {
-
                     if (this.filterByBudget) {
-
                         const maxBudget = parseFloat(this.budget) || 0;
-
                         return this.evaluatedProperties.filter(prop => {
-
                             const cost = parseFloat(prop.total_burn) || parseFloat(prop.rent) || 0;
-
                             return cost <= maxBudget;
-
                         });
-
                     }
-
                     return this.evaluatedProperties;
-
                 },
-
-
 
                 currentProperty() {
-
                     const list = this.filteredProperties();
-
                     if (list.length === 0) return null;
-
                     return list[this.currentCardIndex % list.length];
-
                 },
-
-
 
                 startDrag(e) {
-
                     if (this.isFlicking || this.filteredProperties().length === 0) return;
-
                     this.isDragging = true;
-
                     this.startX = e.clientX || (e.touches && e.touches[0].clientX);
-
                     this.startY = e.clientY || (e.touches && e.touches[0].clientY);
-
                 },
-
-
 
                 drag(e) {
-
                     if (!this.isDragging) return;
-
                     if (e.cancelable) e.preventDefault();
-
                     const x = e.clientX || (e.touches && e.touches[0].clientX);
-
                     const y = e.clientY || (e.touches && e.touches[0].clientY);
-
                     this.offsetX = x - this.startX;
-
                     this.offsetY = y - this.startY;
-
                     const rotate = this.offsetX * 0.08;
-
                     this.cardTransform = `translate(${this.offsetX}px, ${this.offsetY}px) rotate(${rotate}deg)`;
-
                 },
-
-
 
                 endDrag() {
-
                     if (!this.isDragging) return;
-
                     this.isDragging = false;
-
                     
-
                     if (this.offsetX > 130) {
-
                         this.flickOut('right');
-
                     } else if (this.offsetX < -130) {
-
                         this.flickOut('left');
-
                     } else {
-
                         this.resetCard();
-
                     }
-
                 },
-
-
 
                 flickOut(dir) {
-
                     // Try to consume a swipe
-
                     fetch('/api/swipe', { method: 'POST' })
-
                     .then(res => {
-
                         if (res.status === 403) {
-
                             // Enforce upgrade popup
-
                             this.showPricing = true;
-
                             this.resetCard();
-
                             throw new Error("Swipe limit reached");
-
                         }
-
                         return res.json();
-
                     })
-
                     .then(data => {
-
                         this.swipesToday = data.swipes_today;
-
                         
-
                         this.isFlicking = true;
-
                         const screenWidth = window.innerWidth;
-
                         const targetX = dir === 'right' ? screenWidth : -screenWidth;
-
                         const rotate = dir === 'right' ? 35 : -35;
-
                         this.cardTransform = `translate(${targetX}px, ${this.offsetY}px) rotate(${rotate}deg)`;
-
                         
-
                         setTimeout(() => {
-
                             if (dir === 'right') {
-
                                 this.swipeRight();
-
                             } else {
-
                                 this.swipeLeft();
-
                             }
-
                             this.cardTransform = 'scale(0.9) opacity-0';
-
                             setTimeout(() => {
-
                                 this.cardTransform = '';
-
                                 this.offsetX = 0;
-
                                 this.offsetY = 0;
-
                                 this.isFlicking = false;
-
                             }, 150);
-
                         }, 250);
-
                     })
-
                     .catch(err => {
-
                         console.log(err.message);
-
                     });
-
                 },
-
-
 
                 resetCard() {
-
                     this.cardTransform = 'translate(0px, 0px) rotate(0deg)';
-
                     setTimeout(() => {
-
                         this.cardTransform = '';
-
                         this.offsetX = 0;
-
                         this.offsetY = 0;
-
                     }, 200);
-
                 },
-
-
 
                 animateSwipe(dir) {
-
                     if (this.isFlicking || this.filteredProperties().length === 0) return;
-
                     this.flickOut(dir);
-
                 },
-
-
 
                 triggerKeyboardSwipe(dir) {
-
                     if (this.activeTab === 'matcher') {
-
                         this.animateSwipe(dir);
-
                     }
-
                 },
-
-
 
                 swipeLeft() {
-
                     this.nextCard();
-
                 },
-
-
 
                 swipeRight() {
-
                     let prop = this.currentProperty();
-
                     if (prop && !this.savedMatches.find(item => item.id === prop.id)) {
-
                         this.savedMatches.push(prop);
-
                     }
-
                     this.nextCard();
-
                 },
-
-
 
                 nextCard() {
-
                     const list = this.filteredProperties();
-
                     if (list.length > 0) {
-
                         this.currentCardIndex = (this.currentCardIndex + 1) % list.length;
-
                     }
-
                 },
-
-
 
                 removeSaved(item) {
-
                     this.savedMatches = this.savedMatches.filter(p => p.id !== item.id);
-
                 },
 
-
-
                 formatNIS(val) {
-
                     if (typeof val !== 'number') return "0 ₪";
-
                     return val.toLocaleString() + " ₪";
-
                 }
-
             }
-
         }
-
-    </script> -->
-
+    </script>
 </body>
-
-</html> 
-
+</html>

@@ -2,18 +2,409 @@
 <html class="light" lang="en">
 <head>
     <meta charset="utf-8"/>
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>UniSafe - The Financial Survival Engine</title>
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com" rel="preconnect"/>
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Outfit:wght@600;700;800;900&amp;display=swap" rel="stylesheet"/>
-    <!-- Material Symbols -->
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <!-- Alpine.js -->
+    <script>
+(function() {
+    console.log("[UniSafe Mock Layer] Initializing window.fetch Interceptor...");
+
+    const MOCK_STORAGE_KEY = 'unisafe_mock_db';
+
+    // 1. LocalStorage Helper Functions
+    function getMockDB() {
+        const defaultDB = {
+            subscription_tier: 'free',
+            swipes_today: 0,
+            max_swipes: 10,
+            last_swipe_date: new Date().toDateString()
+        };
+        try {
+            const stored = localStorage.getItem(MOCK_STORAGE_KEY);
+            if (!stored) {
+                localStorage.setItem(MOCK_STORAGE_KEY, JSON.stringify(defaultDB));
+                return defaultDB;
+            }
+            const db = JSON.parse(stored);
+            const today = new Date().toDateString();
+            if (db.last_swipe_date !== today) {
+                db.swipes_today = 0;
+                db.last_swipe_date = today;
+                localStorage.setItem(MOCK_STORAGE_KEY, JSON.stringify(db));
+            }
+            return db;
+        } catch (e) {
+            return defaultDB;
+        }
+    }
+
+    function updateMockDB(updates) {
+        const db = getMockDB();
+        const newDB = { ...db, ...updates };
+        localStorage.setItem(MOCK_STORAGE_KEY, JSON.stringify(newDB));
+        return newDB;
+    }
+
+    // 2. High-Fidelity Mock Properties Data
+    const MOCK_PROPERTIES = [
+        {
+            id: 1,
+            title: "2-Room Apartment on Arlozorov (Yad2)",
+            location: "Arlozorov 16, Ramat Gan (Close to BIU shuttle)",
+            size: 45,
+            rent: 4400,
+            utilities: 380,
+            image: "images/comfort_choice.png",
+            city: "Ramat Gan",
+            zone: "Zone A",
+            source: "Yad2",
+            link: "https://www.yad2.co.il/realestate/rent?city=8600&item=1"
+        },
+        {
+            id: 2,
+            title: "Renovated Studio near Bar-Ilan Gate 10 (Yad2)",
+            location: "Herzog 12, Ramat Gan (Walking distance)",
+            size: 32,
+            rent: 3300,
+            utilities: 280,
+            image: "images/comfort_choice.png",
+            city: "Ramat Gan",
+            zone: "Zone A",
+            source: "Yad2",
+            link: "https://www.yad2.co.il/realestate/rent?city=8600&item=2"
+        },
+        {
+            id: 3,
+            title: "Student Flat Share Room (Facebook Marketplace)",
+            location: "Yitzhak Sadeh 5, Ramat Gan",
+            size: 20,
+            rent: 2100,
+            utilities: 190,
+            image: "images/comfort_choice.png",
+            city: "Ramat Gan",
+            zone: "Zone B",
+            source: "Facebook",
+            link: "https://www.facebook.com/marketplace/search/?query=apartment%20rent%20Ramat%20Gan"
+        },
+        {
+            id: 4,
+            title: "Spacious 3-Room near Campus Bridge (Yad2)",
+            location: "Yitzhak Rabin 14, Givat Shmuel",
+            size: 75,
+            rent: 5600,
+            utilities: 520,
+            image: "images/comfort_choice.png",
+            city: "Givat Shmuel",
+            zone: "Zone A",
+            source: "Yad2",
+            link: "https://www.yad2.co.il/realestate/rent?city=2620&item=4"
+        },
+        {
+            id: 5,
+            title: "Cozy Room in Student flat (Facebook)",
+            location: "Brodetsky 18, Tel Aviv (Near TAU)",
+            size: 24,
+            rent: 3950,
+            utilities: 310,
+            image: "images/comfort_choice.png",
+            city: "Tel Aviv",
+            zone: "Zone A",
+            source: "Facebook",
+            link: "https://www.facebook.com/marketplace/search/?query=apartment%20rent%20Tel%20Aviv"
+        },
+        {
+            id: 6,
+            title: "1-Bed flat with view of Technion (Yad2)",
+            location: "Malal 8, Haifa (Technion district)",
+            size: 38,
+            rent: 2500,
+            utilities: 220,
+            image: "images/comfort_choice.png",
+            city: "Haifa",
+            zone: "Zone A",
+            source: "Yad2",
+            link: "https://www.yad2.co.il/realestate/rent?city=4000&item=6"
+        },
+        {
+            id: 7,
+            title: "Facebook Room near Technion Gates",
+            location: "Pinsker 25, Haifa",
+            size: 22,
+            rent: 1800,
+            utilities: 150,
+            image: "images/comfort_choice.png",
+            city: "Haifa",
+            zone: "Zone B",
+            source: "Facebook",
+            link: "https://www.facebook.com/marketplace/search/?query=apartment%20rent%20Haifa"
+        },
+        {
+            id: 8,
+            title: "Flat next to Givat Shmuel Park (Facebook)",
+            location: "Eretz Yitzhak 2, Givat Shmuel",
+            size: 80,
+            rent: 5800,
+            utilities: 480,
+            image: "images/comfort_choice.png",
+            city: "Givat Shmuel",
+            zone: "Zone A",
+            source: "Facebook",
+            link: "https://www.facebook.com/marketplace/search/?query=apartment%20rent%20Givat%20Shmuel"
+        }
+    ];
+
+    const ARNONA_RATES = {
+        "Ramat Gan": { "Zone A": 68.50, "Zone B": 54.20 },
+        "Givat Shmuel": { "Zone A": 61.30 },
+        "Kiryat Ono": { "Zone A": 58.00 },
+        "Tel Aviv": { "Zone A": 78.40 },
+        "Haifa": { "Zone A": 45.00, "Zone B": 35.00 }
+    };
+
+    // 3. Property Search Resolution
+    function resolveProperties(city, budget) {
+        let normalizedCity = "Ramat Gan";
+        const lower = city.toLowerCase();
+        if (lower.includes("ramat") || lower.includes("רמת") || lower.includes("biu")) {
+            normalizedCity = "Ramat Gan";
+        } else if (lower.includes("givat") || lower.includes("גבעת")) {
+            normalizedCity = "Givat Shmuel";
+        } else if (lower.includes("tel aviv") || lower.includes("תל") || lower.includes("tau")) {
+            normalizedCity = "Tel Aviv";
+        } else if (lower.includes("haifa") || lower.includes("חיפה") || lower.includes("technion")) {
+            normalizedCity = "Haifa";
+        }
+
+        let matched = MOCK_PROPERTIES.filter(p => p.city.toLowerCase() === normalizedCity.toLowerCase());
+        if (budget !== null && budget !== undefined) {
+            matched = matched.filter(p => p.rent <= budget);
+        }
+
+        // Return simulated listings if no properties fit the budget
+        if (matched.length === 0) {
+            const targetBudget = budget !== null && budget !== undefined ? budget : 3000;
+            const rent1 = Math.max(1000, Math.round(targetBudget * 0.85));
+            const rent2 = Math.max(1000, Math.round(targetBudget * 0.95));
+            matched = [
+                {
+                    id: 201,
+                    title: `High-Fidelity Studio near ${normalizedCity} Hub (Simulated)`,
+                    location: `Main Street 1, ${normalizedCity}`,
+                    size: 25,
+                    rent: rent1,
+                    utilities: Math.round(rent1 * 0.08),
+                    image: "images/comfort_choice.png",
+                    city: normalizedCity,
+                    zone: "Zone A",
+                    source: "Yad2",
+                    link: `https://www.yad2.co.il/realestate/rent?city=8600&item=201`
+                },
+                {
+                    id: 202,
+                    title: `High-Fidelity Cozy Room near ${normalizedCity} Center (Simulated)`,
+                    location: `Sub Lane 2, ${normalizedCity}`,
+                    size: 18,
+                    rent: rent2,
+                    utilities: Math.round(rent2 * 0.07),
+                    image: "images/comfort_choice.png",
+                    city: normalizedCity,
+                    zone: "Zone B",
+                    source: "Facebook",
+                    link: `https://www.facebook.com/marketplace/search/?query=apartment%20rent%20${encodeURIComponent(normalizedCity)}`
+                }
+            ];
+        }
+        return matched;
+    }
+
+    // 4. Financial Calculations
+    function getMunicipalDiscount(city, income, academicStatus, familyMembers) {
+        const members = familyMembers || 1;
+        if (members === 1) {
+            if (income <= 3700) return 80.0;
+            if (income <= 4900) return 60.0;
+            if (income <= 6000) return 40.0;
+        } else if (members === 2) {
+            if (income <= 5500) return 80.0;
+            if (income <= 7000) return 60.0;
+            if (income <= 8500) return 40.0;
+        } else {
+            if (income <= 8000) return 80.0;
+            if (income <= 10000) return 60.0;
+            if (income <= 12000) return 40.0;
+        }
+
+        if (academicStatus && academicStatus.toLowerCase().includes("student")) {
+            return 40.0;
+        }
+        return 0.0;
+    }
+
+    function calculateArnona(city, zone, size, income, academicStatus, familyMembers) {
+        const cityRates = ARNONA_RATES[city] || {};
+        const rate = cityRates[zone] !== undefined ? cityRates[zone] : 60.00;
+        const annualRawArnona = size * rate;
+        const discountPct = getMunicipalDiscount(city, income, academicStatus, familyMembers);
+        const discountedAnnual = annualRawArnona * (1.0 - (discountPct / 100.0));
+        return Math.round(discountedAnnual / 12.0);
+    }
+
+    function evaluateProperties(profile, properties, cpiMultiplier) {
+        const income = profile.income !== undefined ? profile.income : (profile.budget !== undefined ? profile.budget : 4800);
+        const budget = profile.budget !== undefined ? profile.budget : income;
+        const academicStatus = profile.academic_status || "student";
+        const familyMembers = profile.family_members || 1;
+
+        const colCost = Math.round(1000.0 * cpiMultiplier);
+
+        return properties.map(prop => {
+            const arnona = calculateArnona(
+                prop.city || profile.city || "Ramat Gan",
+                prop.zone || profile.zone || "Zone A",
+                prop.size || 30,
+                income,
+                academicStatus,
+                familyMembers
+            );
+            const totalBurn = prop.rent + prop.utilities + arnona + colCost;
+            const safetyCeiling = budget * 0.65;
+            const isSafe = totalBurn <= safetyCeiling;
+
+            return {
+                id: prop.id,
+                title: prop.title,
+                location: prop.location,
+                size: prop.size,
+                rent: prop.rent,
+                utilities: prop.utilities,
+                image: prop.image || "images/comfort_choice.png",
+                city: prop.city || profile.city || "Ramat Gan",
+                zone: prop.zone || profile.zone || "Zone A",
+                source: prop.source || "Yad2",
+                link: prop.link,
+                arnona_monthly: arnona,
+                total_burn: totalBurn,
+                is_safe: isSafe
+            };
+        });
+    }
+
+    // 5. Fetch Interception Proxy
+    const originalFetch = window.fetch;
+    window.fetch = async function(resource, options = {}) {
+        let url = "";
+        if (typeof resource === 'string') {
+            url = resource;
+        } else if (resource instanceof Request) {
+            url = resource.url;
+        } else if (resource && typeof resource.toString === 'function') {
+            url = resource.toString();
+        }
+
+        const method = (options.method || 'GET').toUpperCase();
+        let path = url;
+        if (url.startsWith('http://') || url.startsWith('https://')) {
+            const parsedUrl = new URL(url);
+            path = parsedUrl.pathname + parsedUrl.search;
+        }
+        const pathNoQuery = path.split('?')[0];
+
+        // Route: GET /api/user
+        if (pathNoQuery === '/api/user' && method === 'GET') {
+            const db = getMockDB();
+            return makeJsonResponse({
+                username: "student_user",
+                subscription_tier: db.subscription_tier,
+                swipes_today: db.swipes_today,
+                max_swipes: db.max_swipes
+            });
+        }
+
+        // Route: POST /api/subscribe
+        if (pathNoQuery === '/api/subscribe' && method === 'POST') {
+            const body = JSON.parse(options.body || '{}');
+            const tier = body.tier || 'free';
+            let maxSwipes = 10;
+            if (tier === 'premium') maxSwipes = 50;
+            else if (tier === 'vip') maxSwipes = 99999;
+
+            const db = updateMockDB({
+                subscription_tier: tier,
+                max_swipes: maxSwipes,
+                swipes_today: 0
+            });
+
+            return makeJsonResponse({
+                message: `Successfully subscribed to ${tier}`,
+                tier: tier,
+                max_swipes: maxSwipes
+            });
+        }
+
+        // Route: GET /api/cpi-index
+        if (pathNoQuery === '/api/cpi-index' && method === 'GET') {
+            return makeJsonResponse({ cpi_multiplier: 1.05 });
+        }
+
+        // Route: GET /api/properties
+        if (pathNoQuery === '/api/properties' && method === 'GET') {
+            const query = path.split('?')[1] || '';
+            const params = new URLSearchParams(query);
+            const city = params.get('city') || 'Ramat Gan';
+            const budgetParam = params.get('budget');
+            const budget = budgetParam ? parseFloat(budgetParam) : null;
+
+            const listings = resolveProperties(city, budget);
+            return makeJsonResponse(listings);
+        }
+
+        // Route: POST /api/evaluate
+        if (pathNoQuery === '/api/evaluate' && method === 'POST') {
+            const body = JSON.parse(options.body || '{}');
+            const profile = body.profile || {};
+            const properties = body.properties || [];
+            const evaluated = evaluateProperties(profile, properties, 1.05);
+            return makeJsonResponse(evaluated);
+        }
+
+        // Route: POST /api/swipe
+        if (pathNoQuery === '/api/swipe' && method === 'POST') {
+            const db = getMockDB();
+            if (db.subscription_tier !== 'vip' && db.swipes_today >= db.max_swipes) {
+                return makeJsonResponse({
+                    detail: `Daily limit of ${db.max_swipes} swipes reached! Upgrade your subscription to keep hunting.`
+                }, 403);
+            }
+
+            const newSwipes = db.swipes_today + 1;
+            updateMockDB({ swipes_today: newSwipes });
+
+            return makeJsonResponse({
+                message: "Swipe recorded",
+                swipes_today: newSwipes,
+                max_swipes: db.max_swipes,
+                remaining: db.max_swipes - newSwipes
+            });
+        }
+
+        // Default: Fallback to original fetch
+        return originalFetch.apply(this, arguments);
+    };
+
+    function makeJsonResponse(data, status = 200) {
+        return Promise.resolve(new Response(JSON.stringify(data), {
+            status: status,
+            headers: { 'Content-Type': 'application/json' }
+        }));
+    }
+
+    console.log("[UniSafe Mock Layer] Interceptor successfully loaded.");
+})();
+</script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     
     <script id="tailwind-config">
@@ -107,12 +498,12 @@
     <style>
         /* Header container */
         .header {
-          position: fixed; /* Keep on top */
+          position: fixed;
           top: 0;
           left:0;
           right:0;
           width: 100%;
-          z-index: 1000; /* Higher value */
+          z-index: 1000;
         }
         
         /* Main Content area */
@@ -147,9 +538,6 @@
             transform: scale(2.5) translate(-18%, -15%);
             filter: blur(4px) brightness(0.3);
         }
-        .card-transition {
-            transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.15);
-        }
         .flick-transition {
             transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
         }
@@ -160,6 +548,11 @@
           display: block;
         }
         
+        .card-transition {
+            touch-action: none;
+            transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.15), opacity 0.15s ease-in-out;
+        }
+        
     </style>
 </head>
 <body class="bg-[#0b0c0c] text-on-surface font-body-md antialiased min-h-screen w-full overflow-y-auto relative" 
@@ -167,7 +560,6 @@
       @keydown.arrow-left.window="triggerKeyboardSwipe('left')" 
       @keydown.arrow-right.window="triggerKeyboardSwipe('right')">
 
-    <!-- Immersive Animated Background Image -->
     <div class="fixed inset-0 overflow-hidden -z-20 bg-black">
         <img src="images/comfort_choice.png" 
              alt="Cozy Student Room" 
@@ -175,112 +567,101 @@
              :class="getZoomClass()">
     </div>
 
-    <!-- Top Navigation App Bar -->
-<header class="glass-card sticky top-0 z-50 w-full border-b border-white/20">
+    <header class="glass-card sticky top-0 z-50 w-full border-b border-white/20">
+        <div class="max-w-[1200px] mx-auto flex items-center justify-between gap-3 px-container-margin py-3">
 
-    <div class="max-w-[1200px] mx-auto flex items-center justify-between gap-2 px-container-margin py-3">
+            <div
+                class="flex items-center gap-2 flex-none cursor-pointer"
+                @click="activeTab = 'home'">
 
-        <!-- Logo -->
-        <div
-            class="flex items-center gap-2 flex-1 min-w-0 cursor-pointer"
-            @click="activeTab = 'home'">
+                <img
+                    src="images/unisafe_logo.png"
+                    alt="UniSafe Owl Mascot Logo"
+                    class="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 object-contain rounded-full shadow-lg border-2 border-primary">
 
-            <img
-                src="images/unisafe_logo.png"
-                alt="UniSafe Owl Mascot Logo"
-                class="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 object-contain rounded-full shadow-lg border-2 border-primary">
+                <div class="hidden min-w-0">
+                    <span class="block text-lg font-black text-primary truncate">
+                        UniSafe
+                    </span>
+                </div>
 
-            <!-- Mobile -->
-            <div class="hidden min-w-0">
-                <span class="block text-lg font-black text-primary truncate">
-                    UniSafe
-                </span>
+                <div class="hidden md:block overflow-hidden min-w-0">
+                    <span class="block text-2xl md:text-3xl font-black text-primary tracking-tight leading-none truncate">
+                        UniSafe
+                    </span>
+                    <span class="block text-[10px] text-[#4d614e] tracking-wider uppercase font-extrabold truncate">
+                        Financial &amp; Housing Platform
+                    </span>
+                </div>
+
             </div>
 
-            <!-- Desktop -->
-            <div class="hidden md:block overflow-hidden min-w-0">
-                <span class="block text-2xl md:text-3xl font-black text-primary tracking-tight leading-none truncate">
-                    UniSafe
-                </span>
-                <span class="block text-[10px] text-[#4d614e] tracking-wider uppercase font-extrabold truncate">
-                    Financial &amp; Housing Platform
-                </span>
+            <nav class="hidden lg:flex gap-md items-center bg-[#F0ECE9]/85 p-1 rounded-full border border-gray-200 shadow-inner">
+
+                <button
+                    @click="activeTab = 'home'"
+                    :class="activeTab === 'home' ? 'bg-primary text-white font-bold scale-105 shadow-sm' : 'text-on-surface-variant hover:text-primary hover:scale-105'"
+                    class="px-6 py-2.5 rounded-full text-xs active:scale-95 transition-all duration-200">
+                    Home
+                </button>
+
+                <button
+                    @click="activeTab = 'dashboard'"
+                    :class="activeTab === 'dashboard' ? 'bg-primary text-white font-bold scale-105 shadow-sm' : 'text-on-surface-variant hover:text-primary hover:scale-105'"
+                    class="px-6 py-2.5 rounded-full text-xs active:scale-95 transition-all duration-200">
+                    Dashboard
+                </button>
+
+                <button
+                    @click="activeTab = 'matcher'"
+                    :class="activeTab === 'matcher' ? 'bg-primary text-white font-bold scale-105 shadow-sm' : 'text-on-surface-variant hover:text-primary hover:scale-105'"
+                    class="px-6 py-2.5 rounded-full text-xs active:scale-95 transition-all duration-200">
+                    Property Matcher
+                </button>
+
+            </nav>
+
+            <div class="flex items-center gap-2 shrink-0">
+
+                <div class="bg-primary/10 border border-primary/20 rounded-full px-2 sm:px-4 py-1.5 flex items-center gap-1 sm:gap-2">
+
+                    <span
+                        class="hidden sm:inline text-xs font-bold text-primary capitalize"
+                        x-text="userPlan.charAt(0).toUpperCase() + userPlan.slice(1) + ' Plan'">
+                    </span>
+
+                    <span class="hidden sm:block w-1 h-1 rounded-full bg-primary/40"></span>
+
+                    <span
+                        class="text-xs font-bold text-primary-container whitespace-nowrap"
+                        x-text="userPlan === 'vip' ? '∞' : `${swipesToday}/${maxSwipes}`">
+                    </span>
+
+                </div>
+
+                <button
+                    @click="showPricing = true"
+                    class="bg-amber-600 hover:bg-amber-700 text-white rounded-full px-3 md:px-4 py-2 text-xs font-bold transition">
+
+                    ⭐
+                    <span class="hidden sm:inline">Upgrade</span>
+
+                </button>
+
+                <button
+                    @click="showHelp = true"
+                    class="w-9 h-9 md:w-10 md:h-10 flex items-center justify-center rounded-full bg-[#F0ECE9] hover:bg-[#E2DDD9] shadow-sm transition">
+
+                    ❓
+
+                </button>
+
             </div>
 
         </div>
 
-        <!-- Desktop Navigation -->
-        <nav class="hidden lg:flex gap-md items-center bg-[#F0ECE9]/85 p-1 rounded-full border border-gray-200 shadow-inner">
+    </header>
 
-            <button
-                @click="activeTab = 'home'"
-                :class="activeTab === 'home' ? 'bg-primary text-white font-bold' : 'text-on-surface-variant hover:text-primary'"
-                class="px-6 py-2.5 rounded-full text-xs transition">
-                Home
-            </button>
-
-            <button
-                @click="activeTab = 'dashboard'"
-                :class="activeTab === 'dashboard' ? 'bg-primary text-white font-bold' : 'text-on-surface-variant hover:text-primary'"
-                class="px-6 py-2.5 rounded-full text-xs transition">
-                Dashboard
-            </button>
-
-            <button
-                @click="activeTab = 'matcher'"
-                :class="activeTab === 'matcher' ? 'bg-primary text-white font-bold' : 'text-on-surface-variant hover:text-primary'"
-                class="px-6 py-2.5 rounded-full text-xs transition">
-                Property Matcher
-            </button>
-
-        </nav>
-
-        <!-- Right Side -->
-        <div class="flex items-center gap-2 shrink-0">
-
-            <!-- Plan -->
-            <div class="bg-primary/10 border border-primary/20 rounded-full px-2 sm:px-4 py-1.5 flex items-center gap-1 sm:gap-2">
-
-                <span
-                    class="hidden sm:inline text-xs font-bold text-primary capitalize"
-                    x-text="`${userPlan} Plan`">
-                </span>
-
-                <span class="hidden sm:block w-1 h-1 rounded-full bg-primary/40"></span>
-
-                <span
-                    class="text-xs font-bold text-primary-container whitespace-nowrap"
-                    x-text="userPlan === 'vip' ? '∞' : `${swipesToday}/${maxSwipes}`">
-                </span>
-
-            </div>
-
-            <!-- Upgrade -->
-            <button
-                @click="showPricing = true"
-                class="bg-amber-600 hover:bg-amber-700 text-white rounded-full px-3 md:px-4 py-2 text-xs font-bold transition">
-
-                ⭐
-                <span class="hidden sm:inline">Upgrade</span>
-
-            </button>
-
-            <!-- Help -->
-            <button
-                @click="showHelp = true"
-                class="w-9 h-9 md:w-10 md:h-10 flex items-center justify-center rounded-full bg-[#F0ECE9] hover:bg-[#E2DDD9] shadow-sm transition">
-
-                ❓
-
-            </button>
-
-        </div>
-
-    </div>
-
-</header>
-
-    <!-- Mobile Navigation Bar -->
     <div class="md:hidden fixed bottom-4 left-4 right-4 z-40 bg-white/95 backdrop-blur border border-gray-200 rounded-full shadow-lg p-1.5 flex justify-around">
         <button @click="activeTab = 'home'" :class="activeTab === 'home' ? 'bg-primary text-white' : 'text-gray-500'" class="flex-1 py-2.5 rounded-full text-center text-xs font-bold transition">
             🏠 Home
@@ -293,10 +674,8 @@
         </button>
     </div>
 
-    <!-- Main Content Canvas -->
-    <!-- <main class="flex-grow flex items-center justify-center p-container-margin relative z-10 overflow-hidden w-full h-[calc(100vh-88px-56px)]"> -->
-	<main class="flex-grow flex items-center justify-center p-container-margin pt-24 pb-24 relative z-10 w-full min-h-[calc(100vh-88px-56px)]">
-        <!-- SCREEN A: HOME / BUDGET GATE -->
+    <main class="flex-grow flex items-center justify-center p-container-margin pt-24 pb-24 relative z-10 w-full min-h-[calc(100vh-88px-56px)] overflow-y-auto">
+
         <div x-show="activeTab === 'home'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-95" class="max-w-[1200px] w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-xl items-center h-full overflow-y-auto py-4">
             
             <div class="flex flex-col gap-md z-10 text-white md:text-left text-center readable-backdrop p-5 rounded-2xl max-w-sm lg:max-w-[350px] self-center">
@@ -356,8 +735,7 @@
 
         </div>
 
-        <!-- SCREEN B: DYNAMIC BREAKDOWN DASHBOARD -->
-        <div x-show="activeTab === 'dashboard'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-95" class="max-w-[1200px] w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-xl h-full items-center overflow-y-auto py-4">
+        <div x-show="activeTab === 'dashboard'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-95" class="max-w-[1200px] w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-xl items-start overflow-y-auto py-4">
             
             <div class="lg:col-span-12 mb-sm text-white readable-backdrop p-4 rounded-2xl flex flex-col md:flex-row md:justify-between md:items-center">
                 <div>
@@ -375,7 +753,7 @@
                 </div>
             </div>
             
-            <div class="lg:col-span-8 flex flex-col gap-lg h-full max-h-[55vh] overflow-y-auto">
+            <div class="lg:col-span-8 flex flex-col gap-lg">
                 <div class="glass-card rounded-xl p-6 shadow-level-1 border border-surface-container-highest">
                     <div class="flex justify-between items-center mb-md">
                         <h2 class="text-headline-md font-headline-md text-on-surface">Allocated Cost Breakdowns</h2>
@@ -385,11 +763,11 @@
                     </div>
                     
                     <div class="h-4 w-full bg-surface-container rounded-full mb-md overflow-hidden flex shadow-inner">
-                        <div class="h-full bg-primary" style="width: 35%"></div>
-                        <div class="h-full bg-[#44634b]" style="width: 10%"></div>
-                        <div class="h-full bg-yellow-600" style="width: 7%"></div>
-                        <div class="h-full bg-purple-600" style="width: 13%"></div>
-                        <div class="h-full bg-safe-zone" style="width: 35%"></div>
+                        <div class="h-full bg-primary" :style="{ width: rentPct + '%' }"></div>
+                        <div class="h-full bg-[#44634b]" :style="{ width: utilitiesPct + '%' }"></div>
+                        <div class="h-full bg-yellow-600" :style="{ width: arnonaPct + '%' }"></div>
+                        <div class="h-full bg-purple-600" :style="{ width: groceryPct + '%' }"></div>
+                        <div class="h-full bg-safe-zone" :style="{ width: safeZonePct + '%' }"></div>
                     </div>
                     
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -397,27 +775,27 @@
                             <div class="flex items-center gap-sm">
                                 <div class="w-3 h-3 rounded-full bg-primary"></div>
                                 <div>
-                                    <p class="text-xs font-bold text-on-surface">Rent Target (35%)</p>
+                                    <p class="text-xs font-bold text-on-surface" x-text="'Rent Target (' + rentPct + '%)'"></p>
                                 </div>
                             </div>
-                            <p class="text-xs font-bold text-on-surface" x-text="formatNIS(budget * 0.35)"></p>
+                            <p class="text-xs font-bold text-on-surface" x-text="formatNIS(budget * rentPct / 100)"></p>
                         </div>
-                                    <div @click="showUtilitiesDetails = !showUtilitiesDetails; showGroceryDetails = false" class="flex flex-col p-2.5 bg-white/70 hover:bg-white rounded-xl border border-[#EAE7E5] cursor-pointer transition-all duration-200">
+                        <div @click="showUtilitiesDetails = !showUtilitiesDetails; showGroceryDetails = false" class="flex flex-col p-2.5 bg-white/70 hover:bg-white rounded-xl border border-[#EAE7E5] cursor-pointer transition-all duration-200">
                             <div class="flex items-center justify-between w-full">
                                 <div class="flex items-center gap-sm">
                                     <div class="w-3.5 h-3.5 rounded-full bg-[#44634b]"></div>
                                     <div>
-                                        <p class="text-xs font-bold text-on-surface">Utilities index (10%) ▾</p>
+                                        <p class="text-xs font-bold text-on-surface" x-text="'Utilities index (' + utilitiesPct + '%) ▾'"></p>
                                     </div>
                                 </div>
-                                <p class="text-xs font-bold text-on-surface" x-text="formatNIS(budget * 0.10)"></p>
+                                <p class="text-xs font-bold text-on-surface" x-text="formatNIS(budget * utilitiesPct / 100)"></p>
                             </div>
                             <div x-show="showUtilitiesDetails" class="mt-2 pl-6 text-[11px] text-on-surface-variant space-y-1 border-t border-gray-100 pt-2">
                                 <ul class="list-disc space-y-0.5 text-gray-600 font-medium">
-                                    <li>⚡ Electricity (Est.): <span class="font-bold text-gray-800" x-text="formatNIS(budget * 0.10 * 0.45)"></span></li>
-                                    <li>💧 Water Municipal (Est.): <span class="font-bold text-gray-800" x-text="formatNIS(budget * 0.10 * 0.20)"></span></li>
-                                    <li>🌐 WiFi & Home Internet: <span class="font-bold text-gray-800" x-text="formatNIS(budget * 0.10 * 0.20)"></span></li>
-                                    <li>🔥 Cooking Gas (Est.): <span class="font-bold text-gray-800" x-text="formatNIS(budget * 0.10 * 0.15)"></span></li>
+                                    <li>⚡ Electricity (Est.): <span class="font-bold text-gray-800" x-text="formatNIS(budget * (utilitiesPct / 100) * 0.45)"></span></li>
+                                    <li>💧 Water Municipal (Est.): <span class="font-bold text-gray-800" x-text="formatNIS(budget * (utilitiesPct / 100) * 0.20)"></span></li>
+                                    <li>🌐 WiFi & Home Internet: <span class="font-bold text-gray-800" x-text="formatNIS(budget * (utilitiesPct / 100) * 0.20)"></span></li>
+                                    <li>🔥 Cooking Gas (Est.): <span class="font-bold text-gray-800" x-text="formatNIS(budget * (utilitiesPct / 100) * 0.15)"></span></li>
                                 </ul>
                             </div>
                         </div>
@@ -426,10 +804,10 @@
                             <div class="flex items-center gap-sm">
                                 <div class="w-3.5 h-3.5 rounded-full bg-yellow-600"></div>
                                 <div>
-                                    <p class="text-xs font-bold text-on-surface">Municipal Tax / Arnona (7%)</p>
+                                    <p class="text-xs font-bold text-on-surface" x-text="'Municipal Tax / Arnona (' + arnonaPct + '%)'"></p>
                                 </div>
                             </div>
-                            <p class="text-xs font-bold text-on-surface" x-text="formatNIS(budget * 0.07)"></p>
+                            <p class="text-xs font-bold text-on-surface" x-text="formatNIS(budget * arnonaPct / 100)"></p>
                         </div>
  
                         <div @click="showGroceryDetails = !showGroceryDetails; showUtilitiesDetails = false" class="flex flex-col p-2.5 bg-white/70 hover:bg-white rounded-xl border border-[#EAE7E5] cursor-pointer transition-all duration-200 font-body-md">
@@ -437,10 +815,10 @@
                                 <div class="flex items-center gap-sm">
                                     <div class="w-3.5 h-3.5 rounded-full bg-purple-600"></div>
                                     <div>
-                                        <p class="text-xs font-bold text-on-surface">Grocery Cost Index (13%) ▾</p>
+                                        <p class="text-xs font-bold text-on-surface" x-text="'Grocery Cost Index (' + groceryPct + '%) ▾'"></p>
                                     </div>
                                 </div>
-                                <p class="text-xs font-bold text-on-surface" x-text="formatNIS(budget * 0.13)"></p>
+                                <p class="text-xs font-bold text-on-surface" x-text="formatNIS(budget * groceryPct / 100)"></p>
                             </div>
                             <div x-show="showGroceryDetails" class="mt-2 pl-6 text-[11px] text-on-surface-variant space-y-1 border-t border-gray-100 pt-2">
                                 <div class="text-[9px] text-gray-400 font-bold uppercase tracking-wider mb-1">Estimated Local Basket Prices:</div>
@@ -481,11 +859,11 @@
             </div>
         </div>
 
-        <!-- SCREEN C: SWIPE PROPERTY MATCHER -->
-        <div x-show="activeTab === 'matcher'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-95" class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-12 gap-8 items-center h-full overflow-y-auto py-4">
+        <div x-show="activeTab === 'matcher'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-95" class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-12 gap-8 items-start py-4">
             
             <div class="md:col-span-7 flex flex-col items-center">
-                <div class="relative w-full max-w-[340px] h-[50vh] min-h-[380px] max-h-[440px] cursor-grab active:cursor-grabbing select-none"
+                <div class="relative w-full max-w-[340px] h-[50vh] min-h-[380px] max-h-[440px] select-none"
+                     :class="filteredProperties().length > 0 ? 'cursor-grab active:cursor-grabbing' : 'cursor-default'"
                      @mousedown="startDrag($event)"
                      @mousemove="drag($event)"
                      @mouseup="endDrag()"
@@ -504,7 +882,6 @@
                         
                         <template x-if="currentProperty()">
                             <div class="w-full h-full flex flex-col justify-between relative">
-                                <!-- Source Platform Logo Badge (Yad2 or Facebook) -->
                                 <div class="absolute top-4 left-4 z-30">
                                     <span class="text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase flex items-center gap-1 shadow-md"
                                           :class="currentProperty().source === 'Facebook' ? 'bg-blue-600' : 'bg-orange-500'">
@@ -561,19 +938,19 @@
                 </div>
 
                 <div class="flex gap-4 mt-4 justify-center w-full max-w-[340px] z-10">
-                    <button @click="animateSwipe('left')" class="w-14 h-14 rounded-full bg-white shadow-lg border border-[#C86B62] flex items-center justify-center text-[#C86B62] hover:bg-[#C86B62] hover:text-white active:scale-90 transition-all duration-200">
+                    <button @click="animateSwipe('left')" class="w-14 h-14 rounded-full bg-white shadow-lg border border-[#C86B62] flex items-center justify-center text-[#C86B62] hover:bg-[#C86B62] hover:text-white hover:scale-110 active:scale-90 transition-all duration-200">
                         <span class="material-symbols-outlined text-2xl">close</span>
                     </button>
                     <button @click="activeTab = 'dashboard'" class="px-4 py-2 rounded-full bg-white border border-gray-300 text-on-surface font-label-md text-[10px] font-bold flex items-center gap-xs hover:bg-gray-50 transition shadow-md">
                         <span class="material-symbols-outlined text-sm">info</span> Breakdown
                     </button>
-                    <button @click="animateSwipe('right')" class="w-14 h-14 rounded-full bg-white shadow-lg border border-safe-zone flex items-center justify-center text-safe-zone hover:bg-safe-zone hover:text-white active:scale-90 transition-all duration-200">
+                    <button @click="animateSwipe('right')" class="w-14 h-14 rounded-full bg-white shadow-lg border border-safe-zone flex items-center justify-center text-safe-zone hover:bg-safe-zone hover:text-white hover:scale-110 active:scale-90 transition-all duration-200">
                         <span class="material-symbols-outlined text-2xl">thumb_up</span>
                     </button>
                 </div>
             </div>
 
-            <div class="md:col-span-5 space-y-4 h-full max-h-[58vh] overflow-y-auto pr-1">
+            <div class="md:col-span-5 space-y-4 pr-1">
                 <div class="glass-card rounded-2xl p-4 shadow-lg flex items-center justify-between">
                     <div>
                         <h3 class="font-bold text-xs text-gray-700 uppercase">Within Budget Limit Only</h3>
@@ -598,7 +975,7 @@
                             <p class="text-xs text-[#6D7271] italic py-2 text-center">Swipe right to save matches.</p>
                         </template>
                         <template x-for="item in savedMatches" :key="item.id">
-                            <div class="bg-white border border-gray-200 rounded-xl p-2.5 flex justify-between items-center shadow-sm cursor-pointer"
+                            <div class="bg-white border border-gray-200 rounded-xl p-2.5 flex justify-between items-center shadow-sm cursor-pointer hover:border-primary/40 hover:shadow-md transition-all duration-200 hover:-translate-y-0.5"
                                  @dblclick="if (item.link) window.open(item.link, '_blank')">
                                 <div>
                                     <span class="font-bold text-xs text-gray-800 block" x-text="item.title"></span>
@@ -607,7 +984,7 @@
                                         <a :href="item.link" target="_blank" class="text-[9px] text-blue-600 underline font-bold hover:text-blue-800" @click.stop>Link 🔗</a>
                                     </div>
                                 </div>
-                                <button @click="removeSaved(item)" class="text-red-500 hover:text-red-700 text-xs font-bold p-1">Remove</button>
+                                 <button @click="removeSaved(item)" class="text-red-500 hover:text-red-700 hover:scale-105 transition-transform text-xs font-bold p-1 inline-block">Remove</button>
                             </div>
                         </template>
                     </div>
@@ -618,7 +995,6 @@
 
     </main>
 
-    <!-- PREMIUM MONETIZATION PRICING MODAL -->
     <div x-show="showPricing" class="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/60 backdrop-blur-sm" x-transition>
         <div class="bg-white rounded-3xl p-6 max-w-lg w-full shadow-2xl border border-gray-200 space-y-6">
             <div class="flex justify-between items-center border-b pb-3">
@@ -632,7 +1008,6 @@
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <!-- Free Plan -->
                 <div class="border rounded-2xl p-4 flex flex-col justify-between hover:border-primary transition" :class="userPlan === 'free' ? 'border-2 border-primary/40 bg-primary/5' : ''">
                     <div>
                         <h4 class="font-bold text-sm text-gray-700">Free</h4>
@@ -646,7 +1021,6 @@
                     </button>
                 </div>
 
-                <!-- Premium Standard -->
                 <div class="border rounded-2xl p-4 flex flex-col justify-between hover:border-amber-600 transition" :class="userPlan === 'premium' ? 'border-2 border-amber-600 bg-amber-50' : 'border-amber-500/30 bg-amber-500/5'">
                     <div>
                         <div class="bg-amber-600 text-white text-[8px] font-bold uppercase py-0.5 px-2 rounded-full inline-block">Popular</div>
@@ -661,7 +1035,6 @@
                     </button>
                 </div>
 
-                <!-- VIP Premium -->
                 <div class="border rounded-2xl p-4 flex flex-col justify-between hover:border-purple-600 transition" :class="userPlan === 'vip' ? 'border-2 border-purple-600 bg-purple-50' : ''">
                     <div>
                         <h4 class="font-bold text-sm text-purple-900">VIP</h4>
@@ -680,7 +1053,6 @@
         </div>
     </div>
 
-    <!-- HELP MODAL -->
     <div x-show="showHelp" class="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/60 backdrop-blur-sm" x-transition>
         <div class="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl border border-gray-200 space-y-4">
             <div class="flex justify-between items-center border-b pb-3">
@@ -704,14 +1076,12 @@
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="glass-card py-3 text-center text-xs text-[#6D7271] border-t border-white/20 flex-shrink-0">
+    <footer class="glass-card py-3 text-center text-xs text-[#6D7271] border-t border-white/20 flex-shrink-0 hidden md:block">
         <div class="max-w-[1200px] mx-auto px-container-margin flex flex-col md:flex-row justify-between items-center gap-sm">
             <span>&copy; 2026 UniSafe Inc.</span>
         </div>
     </footer>
 
-    <!-- Alpine App Logic -->
     <script>
         function uniSafeApp() {
             return {
@@ -724,21 +1094,30 @@
                 campus: 'biu',
                 cpiMultiplier: 1.05,
                 campusName: 'Bar-Ilan University',
+
+                rentPct: 35,
+                utilitiesPct: 10,
+                arnonaPct: 7,
+                groceryPct: 13,
+                get safeZonePct() {
+                    return 100 - (this.rentPct + this.utilitiesPct + this.arnonaPct + this.groceryPct);
+                },
                 
-                // Subscription/Swipe system
                 userPlan: 'free',
                 swipesToday: 0,
                 maxSwipes: 10,
 
-                // Swiper parameters
                 currentCardIndex: 0,
                 isDragging: false,
                 offsetX: 0,
                 offsetY: 0,
                 startX: 0,
                 startY: 0,
-                cardTransform: '',
+                cardTransform: { transform: '', opacity: '' },
                 isFlicking: false,
+                flickTimeout1: null,
+                flickTimeout2: null,
+                flickDir: null,
                 savedMatches: [],
                 filterByBudget: true,
 
@@ -765,7 +1144,8 @@
                             this.userPlan = data.subscription_tier;
                             this.swipesToday = data.swipes_today;
                             this.maxSwipes = data.max_swipes;
-                        });
+                        })
+                        .catch(err => console.error("[UniSafe API Error] fetchUserStatus failed", err));
                 },
 
                 subscribeTo(tier) {
@@ -780,7 +1160,8 @@
                         this.maxSwipes = data.max_swipes;
                         this.swipesToday = 0;
                         this.showPricing = false;
-                    });
+                    })
+                    .catch(err => console.error("[UniSafe API Error] subscribeTo failed", err));
                 },
 
                 fetchCPI() {
@@ -812,7 +1193,8 @@
                         .then(data => {
                             this.properties = data;
                             this.evaluateProperties();
-                        });
+                        })
+                        .catch(err => console.error("[UniSafe API Error] fetchProperties failed", err));
                 },
 
                 evaluateProperties() {
@@ -831,7 +1213,8 @@
                     .then(res => res.json())
                     .then(data => {
                         this.evaluatedProperties = data;
-                    });
+                    })
+                    .catch(err => console.error("[UniSafe API Error] evaluateProperties failed", err));
                 },
 
                 getZoomClass() {
@@ -883,7 +1266,10 @@
                     this.offsetX = x - this.startX;
                     this.offsetY = y - this.startY;
                     const rotate = this.offsetX * 0.08;
-                    this.cardTransform = `translate(${this.offsetX}px, ${this.offsetY}px) rotate(${rotate}deg)`;
+                    this.cardTransform = {
+                        transform: `translate(${this.offsetX}px, ${this.offsetY}px) rotate(${rotate}deg)`,
+                        opacity: '1'
+                    };
                 },
 
                 endDrag() {
@@ -900,11 +1286,35 @@
                 },
 
                 flickOut(dir) {
-                    // Try to consume a swipe
+                    if (this.isFlicking) {
+                        clearTimeout(this.flickTimeout1);
+                        clearTimeout(this.flickTimeout2);
+                        if (this.flickDir === 'right') {
+                            this.swipeRight();
+                        } else if (this.flickDir === 'left') {
+                            this.swipeLeft();
+                        }
+                        this.cardTransform = { transform: '', opacity: '' };
+                        this.offsetX = 0;
+                        this.offsetY = 0;
+                        this.isFlicking = false;
+                    }
+
+                    this.isFlicking = true;
+                    this.flickDir = dir;
+                    const initialCardIndex = this.currentCardIndex;
+
+                    const screenWidth = window.innerWidth;
+                    const targetX = dir === 'right' ? screenWidth : -screenWidth;
+                    const rotate = dir === 'right' ? 35 : -35;
+                    this.cardTransform = {
+                        transform: `translate(${targetX}px, ${this.offsetY}px) rotate(${rotate}deg)`,
+                        opacity: '0'
+                    };
+
                     fetch('/api/swipe', { method: 'POST' })
                     .then(res => {
                         if (res.status === 403) {
-                            // Enforce upgrade popup
                             this.showPricing = true;
                             this.resetCard();
                             throw new Error("Swipe limit reached");
@@ -914,48 +1324,57 @@
                     .then(data => {
                         this.swipesToday = data.swipes_today;
                         
-                        this.isFlicking = true;
-                        const screenWidth = window.innerWidth;
-                        const targetX = dir === 'right' ? screenWidth : -screenWidth;
-                        const rotate = dir === 'right' ? 35 : -35;
-                        this.cardTransform = `translate(${targetX}px, ${this.offsetY}px) rotate(${rotate}deg)`;
-                        
-                        setTimeout(() => {
+                        if (initialCardIndex !== this.currentCardIndex) {
+                            return;
+                        }
+
+                        this.flickTimeout1 = setTimeout(() => {
                             if (dir === 'right') {
                                 this.swipeRight();
                             } else {
                                 this.swipeLeft();
                             }
-                            this.cardTransform = 'scale(0.9) opacity-0';
-                            setTimeout(() => {
-                                this.cardTransform = '';
+                            this.cardTransform = { transform: 'scale(0.9)', opacity: '0' };
+                            
+                            this.flickTimeout2 = setTimeout(() => {
+                                this.cardTransform = { transform: '', opacity: '' };
                                 this.offsetX = 0;
                                 this.offsetY = 0;
                                 this.isFlicking = false;
+                                this.flickDir = null;
                             }, 150);
                         }, 250);
                     })
                     .catch(err => {
-                        console.log(err.message);
+                        console.error("[UniSafe Swipe Error]", err);
+                        if (initialCardIndex === this.currentCardIndex) {
+                            this.resetCard();
+                        }
                     });
                 },
 
                 resetCard() {
-                    this.cardTransform = 'translate(0px, 0px) rotate(0deg)';
+                    this.cardTransform = { transform: 'translate(0px, 0px) rotate(0deg)', opacity: '1' };
                     setTimeout(() => {
-                        this.cardTransform = '';
+                        this.cardTransform = { transform: '', opacity: '' };
                         this.offsetX = 0;
                         this.offsetY = 0;
+                        this.isFlicking = false;
+                        this.flickDir = null;
                     }, 200);
                 },
 
                 animateSwipe(dir) {
-                    if (this.isFlicking || this.filteredProperties().length === 0) return;
+                    if (this.filteredProperties().length === 0) return;
                     this.flickOut(dir);
                 },
 
                 triggerKeyboardSwipe(dir) {
                     if (this.activeTab === 'matcher') {
+                        const activeEl = document.activeElement;
+                        if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'SELECT' || activeEl.tagName === 'TEXTAREA')) {
+                            return;
+                        }
                         this.animateSwipe(dir);
                     }
                 },

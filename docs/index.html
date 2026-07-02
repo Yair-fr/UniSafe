@@ -159,11 +159,10 @@
           height: auto;
           display: block;
         }
-
         
     </style>
 </head>
-<body class="bg-[#0b0c0c] text-on-surface font-body-md antialiased h-screen w-screen flex flex-col justify-between overflow-hidden relative" 
+<body class="bg-[#0b0c0c] text-on-surface font-body-md antialiased min-h-screen w-full overflow-y-auto relative" 
       x-data="uniSafeApp()" 
       @keydown.arrow-left.window="triggerKeyboardSwipe('left')" 
       @keydown.arrow-right.window="triggerKeyboardSwipe('right')">
@@ -296,8 +295,7 @@
 
     <!-- Main Content Canvas -->
     <!-- <main class="flex-grow flex items-center justify-center p-container-margin relative z-10 overflow-hidden w-full h-[calc(100vh-88px-56px)]"> -->
-    <main class="flex-grow flex items-center justify-center p-container-margin pt-24 relative z-10 overflow-hidden w-full h-[calc(100vh-88px-56px)]">
-
+	<main class="flex-grow flex items-center justify-center p-container-margin pt-24 pb-24 relative z-10 w-full min-h-[calc(100vh-88px-56px)]">
         <!-- SCREEN A: HOME / BUDGET GATE -->
         <div x-show="activeTab === 'home'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-95" class="max-w-[1200px] w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-xl items-center h-full overflow-y-auto py-4">
             
